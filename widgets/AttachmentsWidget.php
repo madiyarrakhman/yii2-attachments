@@ -11,7 +11,7 @@ use yii\web\JsExpression;
 use yii\web\View;
 use mitrii\attachments\models\Attachment;
 
-class AttachmentsWidget extends \common\modules\attachment\widgets\DropzoneWidget
+class AttachmentsWidget extends \mitrii\attachments\widgets\DropzoneWidget
 {
     public $name = 'attachments';
 
