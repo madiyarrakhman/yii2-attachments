@@ -1,0 +1,16 @@
+.dropzone
+{
+    margin-bottom: 10px;
+}
+
+.dropzone .dz-preview .dz-details
+{
+    width: 325px !important;
+    height: 240px !important;
+}
+
+.dropzone .dz-preview .dz-details img
+{
+    max-width: 325px !important;
+    max-height: 240px !important;
+}
