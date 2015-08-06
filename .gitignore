@@ -1,0 +1,27 @@
+# cache directories
+Thumbs.db
+*.DS_Store
+*.empty
+
+#IDE
+.idea
+atlassian-ide-plugin.xml
+nbproject
+.buildpath
+.project
+.settings
+.vagrant
+
+# sass cache files
+*.sass-cache
+
+# mac deployment helpers
+switch
+index
+
+#composer
+composer.lock
+composer.phar
+/vendor
+
+

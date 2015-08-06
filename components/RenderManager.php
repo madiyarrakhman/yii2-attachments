@@ -2,8 +2,12 @@
 
 namespace mitrii\attachments\components;
 
+use Imagine\Image\ImageInterface;
 use Yii;
 use mitrii\attachments\models\Attachment;
+use yii\imagine\Image;
+use Imagine\Image\Box;
+use Imagine\Image\Point;
 
 class RenderManager extends \yii\base\Component
 {
@@ -78,8 +82,8 @@ class RenderManager extends \yii\base\Component
     {
         if (YII_DEBUG) return $this->getPlaceholder($hash, $width, $height);
 
-        $url = Yii::$app->getCache()->get($hash.'.'.$width.'.'.$height.'.'.$mode);
-        if ($url !== false) return $url;
+        $full_url = Yii::$app->getCache()->get($hash.'.'.$width.'.'.$height.'.'.$mode);
+        if ($full_url !== false) return $full_url;
 
 
         $mode = empty($mode) ? $this->image_resize_mode : $mode;
@@ -92,12 +96,32 @@ class RenderManager extends \yii\base\Component
             return '';
         }
 
+        $url = sprintf('%s/%s/%s', $width, $height, $attachment->path);
         $key = md5($attachment->path.$width.$height.$this->secret);
 
-        $url = sprintf('%s/%s/%s/%s/%s/%s', $this->image_url_host, $mode,  $key, $width, $height, $attachment->path);
-        Yii::$app->getCache()->set($hash.'.'.$width.'.'.$height.'.'.$mode, $url);
+        $full_url = sprintf('%s/%s/%s/%s', $this->image_url_host, $mode,  $key, $url);
 
-        return $url;
+        Yii::$app->getCache()->set($hash.'.'.$width.'.'.$height.'.'.$mode, $full_url);
+
+        return $full_url;
+    }
+
+    /**
+     * @param $image ImageInterface
+     * @param $mode string
+     * @param $width integer
+     * @param $height integer
+     * @return ImageInterface
+     */
+    public function resizeImage($image, $mode, $width, $height)
+    {
+        $real_width  = (is_numeric($width)) ? $width :  $image->width;
+        $real_height = (is_numeric($height)) ? $height :  $image->height;
+
+        if ($mode == 'c') return $image->copy()->resize(new Box($real_width, $real_height))->crop(new Point(0, 1), new Box($real_width, $real_height));
+        if ($mode == 'r') return $image->copy()->resize(new Box($real_width, $real_height));
+
+        return $image;
     }
 
 } 
