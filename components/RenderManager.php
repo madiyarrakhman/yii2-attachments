@@ -97,7 +97,7 @@ class RenderManager extends \yii\base\Component
         }
 
         $url = sprintf('%s/%s/%s', $width, $height, $attachment->path);
-        $key = md5($attachment->path.$width.$height.$this->secret);
+        $key = md5($url.$this->secret);
 
         $full_url = sprintf('%s/%s/%s/%s', $this->image_url_host, $mode,  $key, $url);
 
