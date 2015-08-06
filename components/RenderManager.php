@@ -118,8 +118,8 @@ class RenderManager extends \yii\base\Component
         $real_width  = (is_numeric($width)) ? $width :  $image->width;
         $real_height = (is_numeric($height)) ? $height :  $image->height;
 
-        if ($mode == 'c') return $image->copy()->thumbnail(new Box($real_width, $real_height), ImageInterface::THUMBNAIL_INSET);
-        if ($mode == 'r') return $image->copy()->resize(new Box($real_width, $real_height), ImageInterface::THUMBNAIL_OUTBOUND);
+        if ($mode == 'c') return $image->copy()->thumbnail(new Box($real_width, $real_height), ImageInterface::THUMBNAIL_OUTBOUND);
+        if ($mode == 'r') return $image->copy()->thumbnail(new Box($real_width, $real_height), ImageInterface::THUMBNAIL_INSET);
 
         return $image;
     }
