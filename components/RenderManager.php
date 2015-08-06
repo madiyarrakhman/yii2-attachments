@@ -32,6 +32,8 @@ class RenderManager extends \yii\base\Component
      */
     public $secret;
 
+    public $placeholder_on_debug = false;
+
     /**
      * @return \common\modules\attachment\Module
      */
@@ -80,7 +82,7 @@ class RenderManager extends \yii\base\Component
      */
     public function getImageUrl($hash, $width, $height, $mode = null)
     {
-        if (YII_DEBUG) return $this->getPlaceholder($hash, $width, $height);
+        if ($this->placeholder_on_debug && YII_DEBUG) return $this->getPlaceholder($hash, $width, $height);
 
         $full_url = Yii::$app->getCache()->get($hash.'.'.$width.'.'.$height.'.'.$mode);
         if ($full_url !== false) return $full_url;
