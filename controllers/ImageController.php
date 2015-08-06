@@ -27,7 +27,7 @@ class ImageController extends \yii\web\Controller
         $w5 = Yii::$app->getRequest()->get('w5');
 
         $image_path = sprintf('%s/%s/%s/%s/%s/%s', $w1, $w2, $w3, $w4, $w5, Yii::$app->getRequest()->get('name'));
-        $hash = basename(str_replace('/','',$image_path));
+        $hash = pathinfo(str_replace('/','',$image_path), PATHINFO_FILENAME);
 
         $attachment = Attachment::find()->where(['hash' => $hash])->one();
 
