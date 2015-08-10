@@ -32,7 +32,7 @@ class RenderManager extends \yii\base\Component
      */
     public $secret;
 
-    public $placeholder_on_debug = false;
+    public $placeholder_on_debug = true;
 
     /**
      * @return \common\modules\attachment\Module
