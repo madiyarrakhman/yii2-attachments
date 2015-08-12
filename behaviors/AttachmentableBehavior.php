@@ -9,32 +9,6 @@ use mitrii\attachments\models\Attachment;
 
 class AttachmentableBehavior extends \yii\base\Behavior
 {
-    public $required_count = 0;
-    public $required_message = false;
-
-    public function init()
-    {
-        $this->required_message = ($this->required_message) ?: Yii::t('attachments', '{0} minimum required', [$this->required_count]);
-    }
-
-    public function events()
-    {
-        return [
-            ActiveRecord::EVENT_BEFORE_VALIDATE => 'validate',
-        ];
-    }
-
-    /**
-     * @param $event ModelEvent
-     */
-    public function validate($event)
-    {
-        if ($this->required_count > 0)
-        {
-            $this->owner->addError('attachments', $this->required_message);
-            $event->isValid = false;
-        }
-    }
 
     public function getMain_photo()
     {
