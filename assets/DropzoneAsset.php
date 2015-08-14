@@ -12,7 +12,7 @@ namespace mitrii\attachments\assets;
 
 class DropzoneAsset extends \yii\web\AssetBundle
 {
-    public $sourcePath = '@vendor/mitrii/attachments/assets/dropzone';
+    public $sourcePath = '@mitrii/attachments/assets/dropzone';
     public $baseUrl = '@web';
     public $css = [
         'css/dropzone.css',
