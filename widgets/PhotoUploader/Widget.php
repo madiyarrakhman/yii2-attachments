@@ -7,7 +7,7 @@
  * Original File Name: Widget.php
  */
 
-namespace frontend\widgets\PhotoUploader;
+namespace mitrii\attachments\widgets\PhotoUploader;
 
 use yii\helpers\Html;
 use yii\helpers\Json;

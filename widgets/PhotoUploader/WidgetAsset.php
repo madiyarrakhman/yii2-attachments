@@ -5,7 +5,7 @@
  * @license http://www.yiiframework.com/license/
  */
 
-namespace frontend\widgets\PhotoUploader;
+namespace mitrii\attachments\widgets\PhotoUploader;
 
 use yii\web\AssetBundle;
 
