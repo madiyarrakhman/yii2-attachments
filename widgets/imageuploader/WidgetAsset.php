@@ -5,14 +5,14 @@
  * @license http://www.yiiframework.com/license/
  */
 
-namespace mitrii\attachments\widgets\PhotoUploader;
+namespace mitrii\attachments\widgets\imageuploader;
 
 use yii\web\AssetBundle;
 
 
 class WidgetAsset extends AssetBundle
 {
-    public $sourcePath = '@app/widgets/PhotoUploader/assets';
+    public $sourcePath = '@app/widgets/imageuploader/assets';
     public $css = [
     ];
     public $js = [
