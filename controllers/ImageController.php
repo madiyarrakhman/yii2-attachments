@@ -20,13 +20,16 @@ class ImageController extends \yii\web\Controller
 
     public function actionIndex($key, $mode, $width, $height)
     {
-        $w1 = Yii::$app->getRequest()->get('w1');
-        $w2 = Yii::$app->getRequest()->get('w2');
-        $w3 = Yii::$app->getRequest()->get('w3');
-        $w4 = Yii::$app->getRequest()->get('w4');
-        $w5 = Yii::$app->getRequest()->get('w5');
 
-        $image_path = sprintf('%s/%s/%s/%s/%s/%s', $w1, $w2, $w3, $w4, $w5, Yii::$app->getRequest()->get('name'));
+        $path[] = Yii::$app->getRequest()->get('w1');
+        $path[] = Yii::$app->getRequest()->get('w2');
+        $path[] = Yii::$app->getRequest()->get('w3');
+        $path[] = Yii::$app->getRequest()->get('w4');
+        $path[] = Yii::$app->getRequest()->get('w5');
+        $path = array_filter($path);
+
+        $image_path = sprintf('%s/%s', implode('/',$path), Yii::$app->getRequest()->get('name'));
+
         $hash = pathinfo(str_replace('/','',$image_path), PATHINFO_FILENAME);
 
         $attachment = Attachment::find()->where(['hash' => $hash])->one();
