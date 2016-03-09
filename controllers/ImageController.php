@@ -35,8 +35,11 @@ class ImageController extends \yii\web\Controller
         $attachment = Attachment::find()->where(['hash' => $hash])->one();
 
         if ($key !== md5(sprintf('%s/%s/%s', $width, $height, $attachment->path).$this->getModule()->get('render')->secret)) throw new NotFoundHttpException();
-        if (!file_exists(realpath($this->getModule()->upload_path.'/'.$attachment->path))) throw new NotFoundHttpException();
-
+        if (!file_exists(realpath($this->getModule()->upload_path.'/'.$attachment->path)))
+        {
+            Yii::error('Attachment not found: ' . realpath($this->getModule()->upload_path.'/'.$attachment->path));
+            throw new NotFoundHttpException();
+        }
 
         $this->renderImage($attachment, $mode, $width, $height);
     }
@@ -54,7 +57,12 @@ class ImageController extends \yii\web\Controller
         $attachment = Attachment::find()->where(['path' => $image_path])->one();
 
         if ($key !== md5(sprintf('%s/%s/%s', $width, $height, $attachment->path).$this->getModule()->get('render')->secret)) throw new NotFoundHttpException();
-        if (!file_exists(realpath($this->getModule()->upload_path.'/'.$attachment->path))) throw new NotFoundHttpException();
+        if (!file_exists(realpath($this->getModule()->upload_path.'/'.$attachment->path)))
+        {
+            Yii::error('Attachment not found: ' . realpath($this->getModule()->upload_path.'/'.$attachment->path));
+            throw new NotFoundHttpException();
+        }
+
 
 
         $this->renderImage($attachment, $mode, $width, $height);
