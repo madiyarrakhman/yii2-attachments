@@ -39,8 +39,25 @@ class ImageController extends \yii\web\Controller
 
 
         $this->renderImage($attachment, $mode, $width, $height);
+    }
+
+    public function actionPath($key, $mode, $width, $height)
+    {
+
+        $path[] = Yii::$app->getRequest()->get('w1');
+        $path[] = Yii::$app->getRequest()->get('w2');
+        $path[] = Yii::$app->getRequest()->get('w3');
+        $path = array_filter($path);
+
+        $image_path = sprintf('%s/%s', implode('/',$path), Yii::$app->getRequest()->get('name'));
+
+        $attachment = Attachment::find()->where(['path' => $image_path])->one();
+
+        if ($key !== md5(sprintf('%s/%s/%s', $width, $height, $attachment->path).$this->getModule()->get('render')->secret)) throw new NotFoundHttpException();
+        if (!file_exists(realpath($this->getModule()->upload_path.'/'.$attachment->path))) throw new NotFoundHttpException();
 
 
+        $this->renderImage($attachment, $mode, $width, $height);
     }
 
     /**
