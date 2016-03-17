@@ -42,7 +42,7 @@ class UploadController extends \yii\web\Controller
     }
 
     /**
-     * @return \common\modules\attachment\Module
+     * @return \mitrii\attachments\Module
      */
     private function getModule()
     {
