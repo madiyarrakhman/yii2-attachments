@@ -109,7 +109,8 @@ class AttachmentFile extends \yii\base\Component
      */
     public function getType()
     {
-        return $this->getUploadedFile()->type;
+        //return $this->getUploadedFile()->type;
+        return \yii\helpers\FileHelper::getMimeType($this->getSavePath());
     }
 
     /**
