@@ -21,6 +21,7 @@ use yii\db\Expression;
  * @property integer $object_id
  * @property integer $size
  * @property string $attr_name
+ * @property boolean $is_downloadable
  */
 class Attachment extends \yii\db\ActiveRecord
 {
@@ -42,7 +43,8 @@ class Attachment extends \yii\db\ActiveRecord
             [['object_id', 'size'], 'integer'],
             [['create_time', 'update_time'], 'safe'],
             [['original_name', 'hash', 'path', 'object', 'type', 'attr_name'], 'string', 'max' => 255],
-            [['hash'], 'unique']
+            [['hash'], 'unique'],
+            [['is_downloadable'], 'boolean'],
         ];
     }
 
@@ -61,6 +63,7 @@ class Attachment extends \yii\db\ActiveRecord
             'size' => Yii::t('app', 'Размер'),
             'type' => Yii::t('app', 'Тип'),
             'attr_name' => Yii::t('app', 'Поле'),
+            'is_downloadable' => Yii::t('app', 'Разрешить скачивание'),
             'create_time' => Yii::t('app', 'Дата создания'),
             'update_time' => Yii::t('app', 'Дата изменения'),
         ];
@@ -92,5 +95,10 @@ class Attachment extends \yii\db\ActiveRecord
     public function getIsImage()
     {
         return strpos($this->type, 'image') === 0;
+    }
+
+    public function getIsAudio()
+    {
+        return strpos($this->type, 'audio') === 0;
     }
 }
