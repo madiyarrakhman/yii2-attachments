@@ -126,4 +126,27 @@ class RenderManager extends \yii\base\Component
         return $image;
     }
 
+
+    public function getAudioUrl($hash)
+    {
+        $full_url = Yii::$app->getCache()->get($hash);
+        if ($full_url !== false) return $full_url;
+
+        $attachment = $this->getAttachment($hash);
+
+        if (empty($attachment))
+        {
+            Yii::warning(sprintf('Attachment not found. Hash: %s', $hash));
+            return '';
+        }
+
+        $url = $attachment->path;
+        $key = md5($url.$this->secret);
+
+        $full_url = sprintf('%s/%s/%s', $this->image_url_host, $key, $url);
+
+        Yii::$app->getCache()->set($hash, $full_url);
+
+        return $full_url;
+    }
 } 
