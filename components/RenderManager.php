@@ -143,7 +143,7 @@ class RenderManager extends \yii\base\Component
         $url = $attachment->path;
         $key = md5($url.$this->secret);
 
-        $full_url = sprintf('%s/%s/%s', $this->image_url_host, $key, $url);
+        $full_url = sprintf('%s/%s/%s/%s', $this->image_url_host, 'audio', $key, $url);
 
         Yii::$app->getCache()->set($hash, $full_url);
 
