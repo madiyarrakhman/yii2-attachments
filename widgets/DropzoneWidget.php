@@ -121,7 +121,7 @@ class DropzoneWidget extends \yii\base\Widget
         $files = '';
         foreach ($this->files as $attachment)
         {
-            $size = (emtpy($attachment->size)) ? 0 : $attachment->size;
+            $size = (empty($attachment->size)) ? 0 : $attachment->size;
             $files .= "var mockFile = {upload: {progress: 100, bytesSent: {$size}, total: {$size}}, processing: true, status: 'success', accepted: true, name: '{$attachment->original_name}', size: {$size} }; this.emit('addedfile', mockFile);";
 
 
