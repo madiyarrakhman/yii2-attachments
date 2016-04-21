@@ -8,7 +8,12 @@ use mitrii\attachments\models\Attachment;
 
 class AttributesAttachmentBehavior extends \yii\base\Behavior
 {
+
+
     public $attributes = [];
+
+
+    public $upload_from_url = false;
 
     public function events()
     {
@@ -23,6 +28,8 @@ class AttributesAttachmentBehavior extends \yii\base\Behavior
 
         foreach($this->attributes as $attribute)
         {
+            if ($this->upload_from_url) $this->owner->$attribute = $this->upload_from_url;
+
             $value = $this->owner->getAttribute($attribute);
 
             if (!empty($value))
@@ -37,6 +44,31 @@ class AttributesAttachmentBehavior extends \yii\base\Behavior
                     ]);
                 }
             }
+        }
+    }
+
+    public function uploadFromUrl($value)
+    {
+        if (!(new \yii\validators\UrlValidator())->validate($value, $error)) return $value;
+
+        $file = new \mitrii\attachments\components\AttachmentFile();
+        $filename = $file->generateSavePath($this->getModule()->getUploadPath() . '/' , $this->getModule()->getPathDeep());
+
+        copy($value, $filename);
+
+        $attachment = new Attachment();
+        $attachment->original_name = basename($value);
+        $attachment->hash = $file->getHash();
+        $attachment->path = $file->getSavePath();
+
+        $attachment->type = FileHelper::getMimeType($filename);
+        $attachment->size = filesize($filename);
+
+        if ($attachment->save())
+        {
+            return $attachment->hash;
+        } else {
+            return '';
         }
     }
 } 

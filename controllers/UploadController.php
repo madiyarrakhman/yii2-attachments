@@ -78,7 +78,7 @@ class UploadController extends \yii\web\Controller
 
 
     }
-
+    
     public function actionDelete()
     {
         $hash = Yii::$app->getRequest()->post('hash');
