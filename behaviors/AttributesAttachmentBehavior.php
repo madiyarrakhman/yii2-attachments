@@ -2,6 +2,7 @@
 
 namespace mitrii\attachments\behaviors;
 
+use common\models\Block;
 use Yii;
 use yii\db\ActiveRecord;
 use mitrii\attachments\models\Attachment;
@@ -9,15 +10,16 @@ use mitrii\attachments\models\Attachment;
 class AttributesAttachmentBehavior extends \yii\base\Behavior
 {
 
-
     public $attributes = [];
 
 
     public $upload_from_url = false;
 
+    public $when_upload_from_url;
+
     public function getModule()
     {
-        return Yii::$app->getModule('attachments');
+        return Yii::$app->getModule('attachment');
     }
 
     public function events()
@@ -33,7 +35,11 @@ class AttributesAttachmentBehavior extends \yii\base\Behavior
 
         foreach($this->attributes as $attribute)
         {
-            if ($this->upload_from_url) $this->owner->$attribute = $this->uploadFromUrl($this->owner->$attribute);
+            if ($this->upload_from_url && ($this->when_upload_from_url === null || call_user_func($this->when_upload_from_url, $this->owner, $attribute)))
+            {
+                $this->owner->$attribute = $this->uploadFromUrl($this->owner->$attribute);
+                $this->owner->updateAll([$attribute => $this->owner->$attribute], ['id' => $this->owner->id]);
+            }
 
             $value = $this->owner->getAttribute($attribute);
 
@@ -57,7 +63,9 @@ class AttributesAttachmentBehavior extends \yii\base\Behavior
         if (!(new \yii\validators\UrlValidator())->validate($value, $error)) return $value;
 
         $file = new \mitrii\attachments\components\AttachmentFile();
-        $filename = $file->generateSavePath($this->getModule()->getUploadPath() . '/' , $this->getModule()->getPathDeep(), 'jpg');
+        $tmp = explode(".", $value);
+        $file_ext = array_pop($tmp);
+        $filename = $this->getModule()->getUploadPath() . '/' . $file->generateSavePath($this->getModule()->getUploadPath() . '/' , $this->getModule()->getPathDeep(), $file_ext);
 
         copy($value, $filename);
 
