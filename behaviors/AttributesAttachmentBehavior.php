@@ -33,7 +33,7 @@ class AttributesAttachmentBehavior extends \yii\base\Behavior
 
         foreach($this->attributes as $attribute)
         {
-            if ($this->upload_from_url) $this->owner->$attribute = $this->upload_from_url;
+            if ($this->upload_from_url) $this->owner->$attribute = $this->uploadFromUrl($this->owner->$attribute);
 
             $value = $this->owner->getAttribute($attribute);
 
@@ -57,7 +57,7 @@ class AttributesAttachmentBehavior extends \yii\base\Behavior
         if (!(new \yii\validators\UrlValidator())->validate($value, $error)) return $value;
 
         $file = new \mitrii\attachments\components\AttachmentFile();
-        $filename = $file->generateSavePath($this->getModule()->getUploadPath() . '/' , $this->getModule()->getPathDeep(), '.jpg');
+        $filename = $file->generateSavePath($this->getModule()->getUploadPath() . '/' , $this->getModule()->getPathDeep(), 'jpg');
 
         copy($value, $filename);
 
