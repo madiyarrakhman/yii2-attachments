@@ -44,7 +44,7 @@ class AttachmentFile extends \yii\base\Component
      * @param int $path_deep Number of subdirectories for file
      * @return string
      */
-    public function generateSavePath($upload_dir, $path_deep = 5)
+    public function generateSavePath($upload_dir, $path_deep = 5, $extension = null)
     {
         if ($this->_path_deep === false) $this->_path_deep = $path_deep;
 
@@ -59,7 +59,7 @@ class AttachmentFile extends \yii\base\Component
             mkdir($upload_dir . $path, 0775, true);
         }
 
-        $this->_save_path = $path . substr($hash, $this->_path_deep) . '.' . strtolower($this->getExtensionName());
+        $this->_save_path = $path . substr($hash, $this->_path_deep) . '.' . strtolower((empty($extension) ? $this->getExtensionName() : $extension));
         return $this->_save_path;
     }
 

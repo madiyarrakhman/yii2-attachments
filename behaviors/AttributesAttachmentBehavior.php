@@ -15,6 +15,11 @@ class AttributesAttachmentBehavior extends \yii\base\Behavior
 
     public $upload_from_url = false;
 
+    public function getModule()
+    {
+        return Yii::$app->getModule('attachments');
+    }
+
     public function events()
     {
         return [
@@ -52,7 +57,7 @@ class AttributesAttachmentBehavior extends \yii\base\Behavior
         if (!(new \yii\validators\UrlValidator())->validate($value, $error)) return $value;
 
         $file = new \mitrii\attachments\components\AttachmentFile();
-        $filename = $file->generateSavePath($this->getModule()->getUploadPath() . '/' , $this->getModule()->getPathDeep());
+        $filename = $file->generateSavePath($this->getModule()->getUploadPath() . '/' , $this->getModule()->getPathDeep(), '.jpg');
 
         copy($value, $filename);
 
