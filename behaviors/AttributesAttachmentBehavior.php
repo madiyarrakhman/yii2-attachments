@@ -66,7 +66,7 @@ class AttributesAttachmentBehavior extends \yii\base\Behavior
         $attachment->hash = $file->getHash();
         $attachment->path = $file->getSavePath();
 
-        $attachment->type = FileHelper::getMimeType($filename);
+        $attachment->type = \yii\helpers\FileHelper::getMimeType($filename);
         $attachment->size = filesize($filename);
 
         if ($attachment->save())
