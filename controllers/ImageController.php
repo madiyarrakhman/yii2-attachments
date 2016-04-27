@@ -26,7 +26,9 @@ class ImageController extends \yii\web\Controller
         $path[] = Yii::$app->getRequest()->get('w3');
         $path[] = Yii::$app->getRequest()->get('w4');
         $path[] = Yii::$app->getRequest()->get('w5');
-        $path = array_filter($path);
+        $path = array_filter($path, function($value) {
+            return ($value !== null && $value !== false && $value !== '');
+        });
 
         $image_path = sprintf('%s/%s', implode('/',$path), Yii::$app->getRequest()->get('name'));
 
