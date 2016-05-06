@@ -34,7 +34,7 @@ class PhotoWidget extends \mitrii\attachments\widgets\DropzoneWidget
         $this->options['thumbnailWidth'] = empty($this->options['thumbnailWidth']) ? 325 : $this->options['thumbnailWidth'];
         $this->options['thumbnailHeight'] = empty($this->options['thumbnailHeight']) ? 240 : $this->options['thumbnailHeight'];
 
-        $this->removeUrl = empty($this->removeUrl) ? Url::to('/attachment/upload/delete') : $this->removeUrl;
+        $this->removeUrl = empty($this->removeUrl) ? Url::to(['/attachment/upload/delete']) : $this->removeUrl;
 
         $hidden_field_id = $this->getId() . '-input';
 
