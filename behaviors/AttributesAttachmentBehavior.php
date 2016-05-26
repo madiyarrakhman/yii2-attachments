@@ -64,8 +64,9 @@ class AttributesAttachmentBehavior extends \yii\base\Behavior
 
         $file = new \mitrii\attachments\components\AttachmentFile();
 
-        $url_filename = explode(".", parse_url($value, PHP_URL_PATH));
-        $file_ext = array_pop($url_filename);
+        $url_filename = parse_url($value, PHP_URL_PATH);
+        $tmp_filename = explode(".", $url_filename);
+        $file_ext = array_pop($tmp_filename);
         $filename = $this->getModule()->getUploadPath() . '/' . $file->generateSavePath($this->getModule()->getUploadPath() . '/' , $this->getModule()->getPathDeep(), $file_ext);
 
         copy($value, $filename);
