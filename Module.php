@@ -14,6 +14,11 @@ class Module extends \yii\base\Module
     public $path_deep = 5;
 
     public $upload_roles = ['admin'];
+    
+    public $show_options = [
+        'jpeg_quality' => 75,
+        'png_compression_level' => 9,
+    ];
 
     public function init()
     {
