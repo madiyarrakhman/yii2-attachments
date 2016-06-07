@@ -83,6 +83,8 @@ class ImageController extends \yii\web\Controller
 
         $image = $this->getModule()->get('render')->resizeImage($image, $mode, $width, $height);
 
-        $image->show(pathinfo($attachment->path, PATHINFO_EXTENSION));
+        $show_options = $this->getModule()->show_options;
+
+        $image->show(pathinfo($attachment->path, PATHINFO_EXTENSION), $show_options);
     }
 }
