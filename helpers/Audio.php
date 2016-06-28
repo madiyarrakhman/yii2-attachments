@@ -5,7 +5,7 @@ namespace mitrii\attachments\helpers;
 use Yii;
 
 
-class Audio
+class Audio extends File
 {
     static public function url($hash)
     {

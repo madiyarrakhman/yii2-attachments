@@ -40,5 +40,14 @@ class Module extends \yii\base\Module
         return $this->path_deep;
     }
 
+    public function getFilePath($hash)
+    {
+        $attachment = $this->getAttachment($hash);
+
+        if (empty($attachment)) return null;
+
+        return $this->getUploadPath().'/'.$attachment->path;
+    }
+
 
 }

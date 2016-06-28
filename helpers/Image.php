@@ -5,7 +5,7 @@ namespace mitrii\attachments\helpers;
 use Yii;
 
 
-class Image 
+class Image extends File
 {
     static public function url($hash, $width, $height, $mode = null)
     {
