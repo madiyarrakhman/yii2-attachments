@@ -2,6 +2,8 @@
 
 namespace mitrii\attachments;
 
+use mitrii\attachments\models\Attachment;
+
 class Module extends \yii\base\Module
 {
     public $controllerNamespace = 'mitrii\attachments\controllers';
@@ -42,7 +44,7 @@ class Module extends \yii\base\Module
 
     public function getFilePath($hash)
     {
-        $attachment = $this->getAttachment($hash);
+        $attachment = Attachment::findOne(['hash' => $hash]);
 
         if (empty($attachment)) return null;
 
