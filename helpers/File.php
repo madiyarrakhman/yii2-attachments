@@ -2,13 +2,18 @@
 
 namespace mitrii\attachments\helpers;
 
+use mitrii\attachments\models\Attachment;
 use Yii;
 
 
 class File
 {
-    static public function path($hash)
+    /**
+     * @param $attachment string|Attachment
+     * @return string
+     */
+    static public function path($attachment)
     {
-        return Yii::$app->getModule('attachment')->getFilePath($hash);
+        return Yii::$app->getModule('attachment')->getFilePath($attachment);
     }
 }

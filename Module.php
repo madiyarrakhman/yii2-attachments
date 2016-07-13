@@ -42,9 +42,9 @@ class Module extends \yii\base\Module
         return $this->path_deep;
     }
 
-    public function getFilePath($hash)
+    public function getFilePath($attachment)
     {
-        $attachment = Attachment::findOne(['hash' => $hash]);
+        $attachment = ($attachment instanceof Attachment) ? $attachment : Attachment::findOne(['hash' => $attachment]);
 
         if (empty($attachment)) return null;
 
