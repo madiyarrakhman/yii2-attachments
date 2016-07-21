@@ -18,6 +18,17 @@ class ImageController extends \yii\web\Controller
         return Yii::$app->getModule('attachment');
     }
 
+    /**
+     * @param $attachment Attachment
+     * @param $mode string
+     * @param $width integer
+     * @param $height integer
+     */
+    public function getCachePath($attachment, $mode, $width, $height)
+    {
+        return $this->getModule()->getUploadPath() . '/' . 'tmp' . '/' . $width.'x'.$height . '/' . $attachment->path;
+    }
+
     public function actionIndex($key, $mode, $width, $height)
     {
 
@@ -79,12 +90,21 @@ class ImageController extends \yii\web\Controller
      */
     public function renderImage($attachment, $mode, $width, $height)
     {
+        if ($this->getModule()->cache_resized) {
+            if (file_exists($this->getCachePath($attachment, $mode, $width, $height))) {
+                Yii::$app->response->xSendFile($this->getCachePath($attachment, $mode, $width, $height), null, ['mimeType' => $attachment->type]);
+            }
+        }
+
         $image = Image::getImagine()->open($this->getModule()->upload_path . '/' . $attachment->path);
-
         $image = $this->getModule()->get('render')->resizeImage($image, $mode, $width, $height);
-
         $show_options = $this->getModule()->show_options;
-
         $image->show(pathinfo($attachment->path, PATHINFO_EXTENSION), $show_options);
+
+        if ($this->getModule()->cache_resized) {
+            $image->save($this->getCachePath($attachment, $mode, $width, $height), $show_options);
+        }
+
+
     }
 }

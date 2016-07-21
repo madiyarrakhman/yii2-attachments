@@ -22,6 +22,8 @@ class Module extends \yii\base\Module
         'png_compression_level' => 9,
     ];
 
+    public $cache_resized = false;
+
     public function init()
     {
         parent::init();
