@@ -95,7 +95,7 @@ class ImageController extends \yii\web\Controller
                 Yii::$app->response->xSendFile($this->getCachePath($attachment, $mode, $width, $height, false), null, [
                     'xHeader' => 'X-Accel-Redirect',
                     'mimeType' => $attachment->type,
-                    'inline'=>true
+                    'inline' => true
                 ]);
                 Yii::$app->end();
             }
