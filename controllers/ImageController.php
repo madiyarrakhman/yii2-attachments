@@ -24,9 +24,9 @@ class ImageController extends \yii\web\Controller
      * @param $width integer
      * @param $height integer
      */
-    public function getCachePath($attachment, $mode, $width, $height)
+    public function getCachePath($attachment, $mode, $width, $height, $full)
     {
-        return $this->getModule()->getUploadPath() . '/' . 'tmp' . '/' . $width.'x'.$height . '/' . $attachment->path;
+        return (($full) ? $this->getModule()->getUploadPath() : '') . '/' . 'images_cache' . '/' . $width.'x'.$height.'x'.strtoupper($mode) . '/' . $attachment->path;
     }
 
     public function actionIndex($key, $mode, $width, $height)
@@ -91,8 +91,13 @@ class ImageController extends \yii\web\Controller
     public function renderImage($attachment, $mode, $width, $height)
     {
         if ($this->getModule()->cache_resized) {
-            if (file_exists($this->getCachePath($attachment, $mode, $width, $height))) {
-                Yii::$app->response->xSendFile($this->getCachePath($attachment, $mode, $width, $height), null, ['mimeType' => $attachment->type]);
+            if (file_exists($this->getCachePath($attachment, $mode, $width, $height, true))) {
+                Yii::$app->response->xSendFile($this->getCachePath($attachment, $mode, $width, $height, false), null, [
+                    'xHeader' => 'X-Accel-Redirect',
+                    'mimeType' => $attachment->type,
+                    'inline'=>true
+                ]);
+                Yii::$app->end();
             }
         }
 
@@ -102,7 +107,8 @@ class ImageController extends \yii\web\Controller
         $image->show(pathinfo($attachment->path, PATHINFO_EXTENSION), $show_options);
 
         if ($this->getModule()->cache_resized) {
-            $image->save($this->getCachePath($attachment, $mode, $width, $height), $show_options);
+            mkdir(dirname($this->getCachePath($attachment, $mode, $width, $height, true)), 0775, true);
+            $image->save($this->getCachePath($attachment, $mode, $width, $height, true), $show_options);
         }
 
 
