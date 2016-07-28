@@ -18,9 +18,10 @@ class Module extends \yii\base\Module
     public $upload_roles = ['admin'];
     
     public $show_options = [
-        'jpeg_quality' => 75,
-        'png_compression_level' => 9,
+        'quality' => 90,
     ];
+
+    public $cacheControlHeader = 'public, max-age=31536000'; // one year
 
     public $cache_resized = false;
 

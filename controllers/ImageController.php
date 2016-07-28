@@ -10,6 +10,18 @@ use yii\imagine\Image;
 
 class ImageController extends \yii\web\Controller
 {
+    public function behaviors()
+    {
+        return [
+            [
+                'class' => 'yii\filters\HttpCache',
+                'only' => ['index', 'path'],
+                //'lastModified' =>
+                'cacheControlHeader' => $this->getModule()->cacheControlHeader,
+            ],
+        ];
+    }
+
     /**
      * @return \mitrii\attachments\Module
      */
