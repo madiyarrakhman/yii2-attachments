@@ -102,6 +102,8 @@ class ImageController extends \yii\web\Controller
      */
     public function renderImage($attachment, $mode, $width, $height)
     {
+        header(sprintf('Cache-Control: %s', $this->getModule()->cacheControlHeader));
+
         if ($this->getModule()->cache_resized) {
             if (file_exists($this->getCachePath($attachment, $mode, $width, $height, true))) {
                 Yii::$app->response->xSendFile($this->getCachePath($attachment, $mode, $width, $height, false), null, [
