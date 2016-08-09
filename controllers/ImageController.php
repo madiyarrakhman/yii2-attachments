@@ -2,6 +2,7 @@
 
 namespace mitrii\attachments\controllers;
 
+use Imagine\Image\ImageInterface;
 use Yii;
 use mitrii\attachments\components\RenderManager;
 use yii\web\NotFoundHttpException;
@@ -38,7 +39,11 @@ class ImageController extends \yii\web\Controller
      */
     public function getCachePath($attachment, $mode, $width, $height, $filter, $full)
     {
-        return (($full) ? $this->getModule()->getUploadPath() : '') . '/' . 'images_cache' . '/' . $width.'x'.$height.'x'.strtoupper($mode) . '/' . $filter . '/' . $attachment->path;
+        return (($full) ? $this->getModule()->getUploadPath() : '') .
+        '/' . 'images_cache' .
+        '/' . $width.'x'.$height.'x'.strtoupper($mode) .
+        (($filter != (ImageInterface::FILTER_UNDEFINED)) ? '/'.$filter : '') .
+        '/' . $attachment->path;
     }
 
     public function actionIndex($key, $mode, $width, $height)
@@ -100,6 +105,7 @@ class ImageController extends \yii\web\Controller
      * @param string $mode
      * @param integer $width
      * @param integer $height
+     * @param string $filter
      * @throws NotFoundHttpException
      */
     public function renderImage($attachment, $mode, $width, $height, $filter)
@@ -123,7 +129,7 @@ class ImageController extends \yii\web\Controller
         $image->show(pathinfo($attachment->path, PATHINFO_EXTENSION), $show_options);
 
         if ($this->getModule()->cache_resized) {
-            mkdir(dirname($this->getCachePath($attachment, $mode, $width, $height, $filter, true)), 0775, true);
+            @mkdir(dirname($this->getCachePath($attachment, $mode, $width, $height, $filter, true)), 0775, true);
             $image->save($this->getCachePath($attachment, $mode, $width, $height, $filter, true), $show_options);
         }
 
