@@ -12,7 +12,7 @@
     ],
     "require": {
         "yiisoft/yii2": "*",
-        "imagine/imagine": "*",
+        "imagine/imagine": "dev-master",
         "bower-asset/dropzone": "4.0.0"
     },
     "autoload": {
