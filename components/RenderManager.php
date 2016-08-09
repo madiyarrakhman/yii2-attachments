@@ -120,8 +120,15 @@ class RenderManager extends \yii\base\Component
         $real_width  = (is_numeric($width)) ? $width :  $image->width;
         $real_height = (is_numeric($height)) ? $height :  $image->height;
 
-        if ($mode == 'c') return $image->copy()->thumbnail(new Box($real_width, $real_height), ImageInterface::THUMBNAIL_OUTBOUND, $filter);
-        if ($mode == 'r') return $image->copy()->thumbnail(new Box($real_width, $real_height), ImageInterface::THUMBNAIL_INSET, $filter);
+        //$box = new Box($real_width, $real_height);
+        //if
+
+
+        if ($mode == 'c') return $image->copy()->resize(new Box($real_width, $real_height), $filter)->crop(new Point(0, 0), new Box($real_width, $real_height));
+        if ($mode == 'r') return $image->copy()->resize(new Box($real_width, $real_height), $filter);
+
+        //if ($mode == 'c') return $image->copy()->thumbnail(new Box($real_width, $real_height), ImageInterface::THUMBNAIL_OUTBOUND, $filter);
+        //if ($mode == 'r') return $image->copy()->thumbnail(new Box($real_width, $real_height), ImageInterface::THUMBNAIL_INSET, $filter);
 
         return $image;
     }
