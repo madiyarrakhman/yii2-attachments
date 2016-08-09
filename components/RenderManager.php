@@ -115,13 +115,13 @@ class RenderManager extends \yii\base\Component
      * @param $height integer
      * @return ImageInterface
      */
-    public function resizeImage($image, $mode, $width, $height)
+    public function resizeImage($image, $mode, $width, $height, $filter = ImageInterface::FILTER_UNDEFINED)
     {
         $real_width  = (is_numeric($width)) ? $width :  $image->width;
         $real_height = (is_numeric($height)) ? $height :  $image->height;
 
-        if ($mode == 'c') return $image->copy()->thumbnail(new Box($real_width, $real_height), ImageInterface::THUMBNAIL_OUTBOUND);
-        if ($mode == 'r') return $image->copy()->thumbnail(new Box($real_width, $real_height), ImageInterface::THUMBNAIL_INSET);
+        if ($mode == 'c') return $image->copy()->thumbnail(new Box($real_width, $real_height), ImageInterface::THUMBNAIL_OUTBOUND, $filter);
+        if ($mode == 'r') return $image->copy()->thumbnail(new Box($real_width, $real_height), ImageInterface::THUMBNAIL_INSET, $filter);
 
         return $image;
     }

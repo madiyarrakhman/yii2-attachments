@@ -2,6 +2,7 @@
 
 namespace mitrii\attachments;
 
+use Imagine\Image\ImageInterface;
 use mitrii\attachments\models\Attachment;
 
 class Module extends \yii\base\Module
@@ -24,6 +25,8 @@ class Module extends \yii\base\Module
     public $cacheControlHeader = 'public, max-age=31536000'; // one year
 
     public $cache_resized = false;
+
+    public $image_filter = ImageInterface::FILTER_UNDEFINED;
 
     public function init()
     {

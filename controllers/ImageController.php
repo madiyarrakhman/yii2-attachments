@@ -36,9 +36,9 @@ class ImageController extends \yii\web\Controller
      * @param $width integer
      * @param $height integer
      */
-    public function getCachePath($attachment, $mode, $width, $height, $full)
+    public function getCachePath($attachment, $mode, $width, $height, $filter, $full)
     {
-        return (($full) ? $this->getModule()->getUploadPath() : '') . '/' . 'images_cache' . '/' . $width.'x'.$height.'x'.strtoupper($mode) . '/' . $attachment->path;
+        return (($full) ? $this->getModule()->getUploadPath() : '') . '/' . 'images_cache' . '/' . $width.'x'.$height.'x'.strtoupper($mode) . '/' . $filter . '/' . $attachment->path;
     }
 
     public function actionIndex($key, $mode, $width, $height)
@@ -66,7 +66,9 @@ class ImageController extends \yii\web\Controller
             throw new NotFoundHttpException();
         }
 
-        $this->renderImage($attachment, $mode, $width, $height);
+        $filter = Yii::$app->request->get('filter', $this->getModule()->image_filter);
+
+        $this->renderImage($attachment, $mode, $width, $height, $filter);
     }
 
     public function actionPath($key, $mode, $width, $height)
@@ -88,9 +90,9 @@ class ImageController extends \yii\web\Controller
             throw new NotFoundHttpException();
         }
 
+        $filter = Yii::$app->request->get('filter', $this->getModule()->image_filter);
 
-
-        $this->renderImage($attachment, $mode, $width, $height);
+        $this->renderImage($attachment, $mode, $width, $height, $filter);
     }
 
     /**
@@ -100,13 +102,13 @@ class ImageController extends \yii\web\Controller
      * @param integer $height
      * @throws NotFoundHttpException
      */
-    public function renderImage($attachment, $mode, $width, $height)
+    public function renderImage($attachment, $mode, $width, $height, $filter)
     {
         header(sprintf('Cache-Control: %s', $this->getModule()->cacheControlHeader));
 
         if ($this->getModule()->cache_resized) {
-            if (file_exists($this->getCachePath($attachment, $mode, $width, $height, true))) {
-                Yii::$app->response->xSendFile($this->getCachePath($attachment, $mode, $width, $height, false), null, [
+            if (file_exists($this->getCachePath($attachment, $mode, $width, $height, $filter, true))) {
+                Yii::$app->response->xSendFile($this->getCachePath($attachment, $mode, $width, $height, $filter, false), null, [
                     'xHeader' => 'X-Accel-Redirect',
                     'mimeType' => $attachment->type,
                     'inline' => true
@@ -116,13 +118,13 @@ class ImageController extends \yii\web\Controller
         }
 
         $image = Image::getImagine()->open($this->getModule()->upload_path . '/' . $attachment->path);
-        $image = $this->getModule()->get('render')->resizeImage($image, $mode, $width, $height);
+        $image = $this->getModule()->get('render')->resizeImage($image, $mode, $width, $height, $filter);
         $show_options = $this->getModule()->show_options;
         $image->show(pathinfo($attachment->path, PATHINFO_EXTENSION), $show_options);
 
         if ($this->getModule()->cache_resized) {
-            mkdir(dirname($this->getCachePath($attachment, $mode, $width, $height, true)), 0775, true);
-            $image->save($this->getCachePath($attachment, $mode, $width, $height, true), $show_options);
+            mkdir(dirname($this->getCachePath($attachment, $mode, $width, $height, $filter, true)), 0775, true);
+            $image->save($this->getCachePath($attachment, $mode, $width, $height, $filter, true), $show_options);
         }
 
 
