@@ -5,7 +5,6 @@ namespace mitrii\attachments\components;
 use Imagine\Image\ImageInterface;
 use Yii;
 use mitrii\attachments\models\Attachment;
-use yii\imagine\Image;
 use Imagine\Image\Box;
 use Imagine\Image\Point;
 

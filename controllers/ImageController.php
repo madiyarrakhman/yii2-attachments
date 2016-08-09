@@ -7,7 +7,6 @@ use Yii;
 use mitrii\attachments\components\RenderManager;
 use yii\web\NotFoundHttpException;
 use mitrii\attachments\models\Attachment;
-use yii\imagine\Image;
 
 class ImageController extends \yii\web\Controller
 {
@@ -123,7 +122,14 @@ class ImageController extends \yii\web\Controller
             }
         }
 
-        $image = Image::getImagine()->open($this->getModule()->upload_path . '/' . $attachment->path);
+        if (class_exists('Gmagick', false)) {
+            $image = new \Imagine\Gmagick\Imagine();
+        }
+        elseif (class_exists('Imagick', false)) {
+            $image = new \Imagine\Imagick\Imagine();
+        }
+
+        $image = $image->open($this->getModule()->upload_path . '/' . $attachment->path);
         $image = $this->getModule()->get('render')->resizeImage($image, $mode, $width, $height, $filter);
         $show_options = $this->getModule()->show_options;
         $image->show(pathinfo($attachment->path, PATHINFO_EXTENSION), $show_options);
