@@ -35,11 +35,8 @@ class AttributesAttachmentBehavior extends \yii\base\Behavior
 
         foreach($this->attributes as $attribute)
         {
-            if ($this->upload_from_url && ($this->when_upload_from_url === null || call_user_func($this->when_upload_from_url, $this->owner, $attribute)))
-            {
-                $this->owner->$attribute = $this->uploadFromUrl($this->owner->$attribute);
-                $this->owner->updateAll([$attribute => $this->owner->$attribute], ['id' => $this->owner->id]);
-            }
+
+            $this->loadByUrl($attribute);
 
             $value = $this->owner->getAttribute($attribute);
 
@@ -55,6 +52,15 @@ class AttributesAttachmentBehavior extends \yii\base\Behavior
                     ]);
                 }
             }
+        }
+    }
+
+    public function loadByUrl($attribute)
+    {
+        if ($this->upload_from_url && ($this->when_upload_from_url === null || call_user_func($this->when_upload_from_url, $this->owner, $attribute)))
+        {
+            $this->owner->$attribute = $this->uploadFromUrl($this->owner->$attribute);
+            $this->owner->updateAll([$attribute => $this->owner->$attribute], ['id' => $this->owner->id]);
         }
     }
 
