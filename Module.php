@@ -1,13 +1,13 @@
 <?php
 
-namespace mitrii\attachments;
+namespace musan\attachments;
 
 use Imagine\Image\ImageInterface;
-use mitrii\attachments\models\Attachment;
+use musan\attachments\models\Attachment;
 
 class Module extends \yii\base\Module
 {
-    public $controllerNamespace = 'mitrii\attachments\controllers';
+    public $controllerNamespace = 'musan\attachments\controllers';
 
     /**
      * @var string Path for uploading files

@@ -1,6 +1,6 @@
 <?php
 
-namespace mitrii\attachments\controllers;
+namespace musan\attachments\controllers;
 
 use Yii;
 use yii\filters\AccessControl;
@@ -9,9 +9,9 @@ use yii\web\BadRequestHttpException;
 use yii\web\HttpException;
 use yii\web\NotFoundHttpException;
 use yii\web\Response;
-use mitrii\attachments\components\AttachmentFile;
-use mitrii\attachments\models\Attachment;
-use mitrii\attachments\helpers\Image;
+use musan\attachments\components\AttachmentFile;
+use musan\attachments\models\Attachment;
+use musan\attachments\helpers\Image;
 
 class UploadController extends \yii\web\Controller
 {
@@ -42,7 +42,7 @@ class UploadController extends \yii\web\Controller
     }
 
     /**
-     * @return \mitrii\attachments\Module
+     * @return \musan\attachments\Module
      */
     private function getModule()
     {

@@ -1,6 +1,6 @@
 <?php
 
-namespace mitrii\attachments\widgets;
+namespace musan\attachments\widgets;
 
 use Yii;
 use yii\helpers\Html;
@@ -9,9 +9,9 @@ use yii\helpers\ArrayHelper;
 use yii\helpers\Json;
 use yii\web\JsExpression;
 use yii\web\View;
-use mitrii\attachments\models\Attachment;
-use mitrii\attachments\helpers\Image;
-use mitrii\attachments\assets\DropzoneAsset;
+use musan\attachments\models\Attachment;
+use musan\attachments\helpers\Image;
+use musan\attachments\assets\DropzoneAsset;
 
 class DropzoneWidget extends \yii\base\Widget
 {

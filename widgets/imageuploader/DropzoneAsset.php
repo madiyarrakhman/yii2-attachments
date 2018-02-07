@@ -1,6 +1,6 @@
 <?php
 
-namespace mitrii\attachments\widgets\imageuploader;
+namespace musan\attachments\widgets\imageuploader;
 
 use yii\web\AssetBundle;
 

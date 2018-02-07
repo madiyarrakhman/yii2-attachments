@@ -1,8 +1,8 @@
 <?php
 
-namespace mitrii\attachments\helpers;
+namespace musan\attachments\helpers;
 
-use mitrii\attachments\models\Attachment;
+use musan\attachments\models\Attachment;
 use Yii;
 
 
