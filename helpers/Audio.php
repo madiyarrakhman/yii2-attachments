@@ -1,6 +1,6 @@
 <?php
 
-namespace mitrii\attachments\helpers;
+namespace musan\attachments\helpers;
 
 use Yii;
 

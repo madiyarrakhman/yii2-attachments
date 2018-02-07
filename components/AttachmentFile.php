@@ -1,5 +1,5 @@
 <?php
-namespace mitrii\attachments\components;
+namespace musan\attachments\components;
 
 use yii\web\UploadedFile;
 

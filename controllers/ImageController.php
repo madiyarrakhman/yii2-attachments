@@ -1,12 +1,12 @@
 <?php
 
-namespace mitrii\attachments\controllers;
+namespace musan\attachments\controllers;
 
 use Imagine\Image\ImageInterface;
 use Yii;
-use mitrii\attachments\components\RenderManager;
+use musan\attachments\components\RenderManager;
 use yii\web\NotFoundHttpException;
-use mitrii\attachments\models\Attachment;
+use musan\attachments\models\Attachment;
 
 class ImageController extends \yii\web\Controller
 {
@@ -23,7 +23,7 @@ class ImageController extends \yii\web\Controller
     }
 
     /**
-     * @return \mitrii\attachments\Module
+     * @return \musan\attachments\Module
      */
     private function getModule()
     {

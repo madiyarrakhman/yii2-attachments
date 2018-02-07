@@ -1,11 +1,11 @@
 <?php
 
-namespace mitrii\attachments\behaviors;
+namespace musan\attachments\behaviors;
 
 use common\models\Block;
 use Yii;
 use yii\db\ActiveRecord;
-use mitrii\attachments\models\Attachment;
+use musan\attachments\models\Attachment;
 
 class AttributesAttachmentBehavior extends \yii\base\Behavior
 {
@@ -68,7 +68,7 @@ class AttributesAttachmentBehavior extends \yii\base\Behavior
     {
         if (!(new \yii\validators\UrlValidator())->validate($value, $error)) return $value;
 
-        $file = new \mitrii\attachments\components\AttachmentFile();
+        $file = new \musan\attachments\components\AttachmentFile();
 
         $url_filename = parse_url($value, PHP_URL_PATH);
         $tmp_filename = explode(".", $url_filename);

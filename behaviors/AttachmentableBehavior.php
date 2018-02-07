@@ -1,11 +1,11 @@
 <?php
 
-namespace mitrii\attachments\behaviors;
+namespace musan\attachments\behaviors;
 
 use Yii;
 use yii\base\ModelEvent;
 use yii\db\ActiveRecord;
-use mitrii\attachments\models\Attachment;
+use musan\attachments\models\Attachment;
 
 class AttachmentableBehavior extends \yii\base\Behavior
 {

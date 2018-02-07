@@ -1,15 +1,15 @@
 <?php
 
-namespace mitrii\attachments\widgets;
+namespace musan\attachments\widgets;
 
 use Yii;
 use yii\helpers\Html;
 use yii\helpers\Url;
 use yii\web\JqueryAsset;
 use yii\web\JsExpression;
-use mitrii\attachments\models\Attachment;
+use musan\attachments\models\Attachment;
 
-class PhotoWidget extends \mitrii\attachments\widgets\DropzoneWidget
+class PhotoWidget extends \musan\attachments\widgets\DropzoneWidget
 {
     public $show_previews_in_dropzone = true;
     public $removeUrl;

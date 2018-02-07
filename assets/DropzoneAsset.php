@@ -7,12 +7,12 @@
  * Original File Name: DropzoneAsset.php
  */
 
-namespace mitrii\attachments\assets;
+namespace musan\attachments\assets;
 
 
 class DropzoneAsset extends \yii\web\AssetBundle
 {
-    public $sourcePath = '@mitrii/attachments/assets/dropzone';
+    public $sourcePath = '@musan/attachments/assets/dropzone';
     public $baseUrl = '@web';
     public $css = [
         'css/dropzone.css',

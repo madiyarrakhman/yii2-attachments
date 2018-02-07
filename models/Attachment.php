@@ -1,6 +1,6 @@
 <?php
 
-namespace mitrii\attachments\models;
+namespace musan\attachments\models;
 
 use Yii;
 use yii\behaviors\TimestampBehavior;

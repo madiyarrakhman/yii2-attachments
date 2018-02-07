@@ -7,11 +7,11 @@
  * Original File Name: Widget.php
  */
 
-namespace mitrii\attachments\widgets\imageuploader;
+namespace musan\attachments\widgets\imageuploader;
 
 use yii\helpers\Html;
 use yii\helpers\Json;
-use \mitrii\attachments\helpers\Image;
+use \musan\attachments\helpers\Image;
 use yii\helpers\Url;
 use yii\web\JsExpression;
 use yii\web\View;

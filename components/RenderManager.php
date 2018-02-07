@@ -1,10 +1,10 @@
 <?php
 
-namespace mitrii\attachments\components;
+namespace musan\attachments\components;
 
 use Imagine\Image\ImageInterface;
 use Yii;
-use mitrii\attachments\models\Attachment;
+use musan\attachments\models\Attachment;
 use Imagine\Image\Box;
 use Imagine\Image\Point;
 
