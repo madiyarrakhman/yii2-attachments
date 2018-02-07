@@ -1,5 +1,7 @@
 <?php
 
+namespace musan\attachments\migrations;
+
 use yii\db\Migration;
 
 class m160318_065826_attachment_downloadable extends Migration

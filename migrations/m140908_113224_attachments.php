@@ -1,5 +1,7 @@
 <?php
 
+namespace musan\attachments\migrations;
+
 use yii\db\Schema;
 use yii\db\Migration;
 
