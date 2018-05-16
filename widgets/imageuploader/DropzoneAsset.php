@@ -5,15 +5,14 @@ namespace musan\attachments\widgets\imageuploader;
 use yii\web\AssetBundle;
 
 /**
- * @author Qiang Xue <qiang.xue@gmail.com>
- * @since 2.0
+ * @deprecated
  */
 class DropzoneAsset extends AssetBundle
 {
-    public $sourcePath = '@bower/dropzone/dist';
+    public $sourcePath = '@npm/dropzone/dist';
     public $css = [
-        'basic.css',
-        'dropzone.css',
+        //'basic.css',
+        //'dropzone.css',
     ];
     public $js = [
         'dropzone.js',

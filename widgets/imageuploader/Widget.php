@@ -1,11 +1,4 @@
 <?php
-/**
- * Poject: business-broker
- * User: mitrii
- * Date: 6.25.2015
- * Time: 13:52
- * Original File Name: Widget.php
- */
 
 namespace musan\attachments\widgets\imageuploader;
 
@@ -15,23 +8,14 @@ use \musan\attachments\helpers\Image;
 use yii\helpers\Url;
 use yii\web\JsExpression;
 use yii\web\View;
+use yii\widgets\InputWidget;
 
-class Widget extends \yii\base\Widget
+/**
+ * @deprecated
+ */
+class Widget extends InputWidget
 {
-    /**
-     * @var string The name of the file field
-     */
-    public $name = false;
 
-    /**
-     * @var \yii\base\Model The model for the file field
-     */
-    public $model = false;
-
-    /**
-     * @var string The attribute of the model
-     */
-    public $attribute = false;
 
     /**
      * @var array An array of options that are supported by Dropzone
@@ -72,16 +56,20 @@ class Widget extends \yii\base\Widget
         $previewTemplate = '<div class="dz-preview dz-file-preview"><div class="dz-details"><div class="dz-filename"><span data-dz-name></span></div><div class="dz-size" data-dz-size></div><img data-dz-thumbnail /></div><div class="dz-progress"><span class="dz-upload" data-dz-uploadprogress></span></div><div class="dz-success-mark"><span>✔</span></div><div class="dz-error-mark"><span>✘</span></div><div class="dz-error-message"><span data-dz-errormessage></span></div></div>';
 
         echo Html::hiddenInput('attachments', $this->filesList, ['id' => "{$this->id}-input"]);
-        echo Html::tag('div', '', ['id'=>$this->id, 'class' => 'add-photo dropzone', 'style' => 'width:200px;height:150px;']);
-        echo Html::tag('div', '', ['class'=>'advert-pics dz-preview', 'id'=>"{$this->id}-container"]);
+
+        echo Html::beginTag('div', ['id'=>$this->id, 'class' => 'dz dz-clickable', /*'style' => 'width:640px;height:480px;'*/]);
+            echo Html::tag('div', '', ['class'=>'advert-pics dz-preview', 'id'=>"{$this->id}-container"]);
+            echo '<div class="dz-message needsclick">Drop files here or click to upload.<br><span class="note needsclick">(This is just a demo dropzone. Selected files are <strong>not</strong> actually uploaded.)</span></div>';
+        echo Html::endTag('div');
+        ///echo ;
 
 
 
         $properties = Json::encode([
             'url' => Url::to(['/attachment/upload', 'name'=>$this->name]),
             'maxFilesize' => 10,
-            'thumbnailWidth' => 200,
-            'thumbnailHeight' => 150,
+            'thumbnailWidth' => 320,
+            'thumbnailHeight' => 240,
             'dictDefaultMessage' => '',
             'paramName' => $this->name,
             'addRemoveLinks' => true,
@@ -97,7 +85,6 @@ class Widget extends \yii\base\Widget
 
 
             'removedfile' => new JsExpression("function(file){
-            console.log(file.hash);
                  $.post('{$this->removeUrl}', {'hash': file.hash}, function(data){
                     file.previewElement.parentNode.removeChild(file.previewElement);
                  }, 'json');
@@ -114,7 +101,8 @@ class Widget extends \yii\base\Widget
         ]);
     
         $this->view->registerJs("window.files_list = [];");
-        $this->view->registerJs("Dropzone.autoDiscover = false; var myDropzone = new Dropzone('#{$this->id}', {$properties});");
+        //$this->view->registerJs("Dropzone.autoDiscover = false;", View::POS_HEAD);
+        $this->view->registerJs("var myDropzone = new Dropzone('#{$this->id}', {$properties});");
 
         foreach ($this->model->attachments as $key=>$file) {
             $this->view->registerJs(new JsExpression("

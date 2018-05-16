@@ -21,6 +21,7 @@ use yii\db\Expression;
  * @property integer $object_id
  * @property integer $size
  * @property string $attr_name
+ * @property string $extension
  * @property boolean $is_downloadable
  */
 class Attachment extends \yii\db\ActiveRecord
@@ -30,7 +31,7 @@ class Attachment extends \yii\db\ActiveRecord
      */
     public static function tableName()
     {
-        return 'attachment';
+        return '{{%attachment}}';
     }
 
     /**
@@ -42,7 +43,7 @@ class Attachment extends \yii\db\ActiveRecord
             [['original_name', 'hash', 'path'], 'required'],
             [['object_id', 'size'], 'integer'],
             [['create_time', 'update_time'], 'safe'],
-            [['original_name', 'hash', 'path', 'object', 'type', 'attr_name'], 'string', 'max' => 255],
+            [['original_name', 'hash', 'path', 'object', 'type', 'attr_name', 'extension'], 'string', 'max' => 255],
             [['hash'], 'unique'],
             [['is_downloadable'], 'boolean'],
         ];
@@ -54,18 +55,19 @@ class Attachment extends \yii\db\ActiveRecord
     public function attributeLabels()
     {
         return [
-            'id' => Yii::t('app', 'ID'),
-            'original_name' => Yii::t('app', 'Оригинальное имя файла'),
-            'hash' => Yii::t('app', 'Хеш имени файла'),
-            'path' => Yii::t('app', 'Путь к файлу'),
-            'object' => Yii::t('app', 'Объект'),
-            'object_id' => Yii::t('app', 'ИД объекта'),
-            'size' => Yii::t('app', 'Размер'),
-            'type' => Yii::t('app', 'Тип'),
-            'attr_name' => Yii::t('app', 'Поле'),
-            'is_downloadable' => Yii::t('app', 'Разрешить скачивание'),
-            'create_time' => Yii::t('app', 'Дата создания'),
-            'update_time' => Yii::t('app', 'Дата изменения'),
+            'id' => Yii::t('attachment', 'ID'),
+            'original_name' => Yii::t('attachment', 'Оригинальное имя файла'),
+            'hash' => Yii::t('attachment', 'Хеш имени файла'),
+            'path' => Yii::t('attachment', 'Путь к файлу'),
+            'object' => Yii::t('attachment', 'Объект'),
+            'object_id' => Yii::t('attachment', 'ИД объекта'),
+            'size' => Yii::t('attachment', 'Размер'),
+            'type' => Yii::t('attachment', 'Тип'),
+            'attr_name' => Yii::t('attachment', 'Поле'),
+            'is_downloadable' => Yii::t('attachment', 'Разрешить скачивание'),
+            'create_time' => Yii::t('attachment', 'Дата создания'),
+            'update_time' => Yii::t('attachment', 'Дата изменения'),
+            'extension' => Yii::t('attachment', 'Расширение'),
         ];
     }
 
@@ -73,7 +75,7 @@ class Attachment extends \yii\db\ActiveRecord
     {
         return [
             [
-                'class' => TimestampBehavior::className(),
+                'class' => TimestampBehavior::class,
                 'createdAtAttribute' => 'create_time',
                 'updatedAtAttribute' => 'update_time',
                 'value' => new Expression('NOW()'),
@@ -100,5 +102,10 @@ class Attachment extends \yii\db\ActiveRecord
     public function getIsAudio()
     {
         return strpos($this->type, 'audio') === 0;
+    }
+
+    public static function find()
+    {
+        return new AttachmentQuery(get_called_class());
     }
 }

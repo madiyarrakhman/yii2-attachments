@@ -3,9 +3,12 @@
 namespace musan\attachments;
 
 use Imagine\Image\ImageInterface;
+use musan\attachments\components\AttachmentService;
+use musan\attachments\components\UrlRule;
 use musan\attachments\models\Attachment;
+use yii\base\BootstrapInterface;
 
-class Module extends \yii\base\Module
+class Module extends \yii\base\Module implements BootstrapInterface
 {
     public $controllerNamespace = 'musan\attachments\controllers';
 
@@ -33,7 +36,26 @@ class Module extends \yii\base\Module
     {
         parent::init();
 
+        $this->setComponents([
+            'service' => [
+                'class' => AttachmentService::class,
+                '_module' => $this,
+            ],
+        ]);
         // custom initialization code goes here
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function bootstrap($app)
+    {
+        $app->getUrlManager()->addRules([
+            [
+                'class' => UrlRule::class,
+                'moduleId' => $this->id,
+            ],
+        ], false);
     }
 
     /**

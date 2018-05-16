@@ -3,11 +3,17 @@
 namespace musan\attachments\components;
 
 use Imagine\Image\ImageInterface;
+use musan\attachments\Module;
 use Yii;
 use musan\attachments\models\Attachment;
 use Imagine\Image\Box;
 use Imagine\Image\Point;
 
+/**
+ * Class RenderManager
+ * @package musan\attachments\components
+ * @deprecated Use AttachmentService
+ */
 class RenderManager extends \yii\base\Component
 {
 
@@ -34,7 +40,7 @@ class RenderManager extends \yii\base\Component
     public $placeholder_on_debug = true;
 
     /**
-     * @return \common\modules\attachment\Module
+     * @return Module
      */
     public function getModule()
     {

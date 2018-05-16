@@ -25,12 +25,12 @@ class AttributesAttachmentBehavior extends \yii\base\Behavior
     public function events()
     {
         return [
-            ActiveRecord::EVENT_AFTER_UPDATE => 'asterSave',
-            ActiveRecord::EVENT_AFTER_INSERT => 'asterSave',
+            ActiveRecord::EVENT_AFTER_UPDATE => 'afterSave',
+            ActiveRecord::EVENT_AFTER_INSERT => 'afterSave',
         ];
     }
 
-    public function asterSave($event)
+    public function afterSave($event)
     {
 
         foreach($this->attributes as $attribute)

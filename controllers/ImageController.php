@@ -8,17 +8,23 @@ use musan\attachments\components\RenderManager;
 use yii\web\NotFoundHttpException;
 use musan\attachments\models\Attachment;
 
+/**
+ * Class ImageController
+ * @package musan\attachments\controllers
+ * @deprecated
+ */
 class ImageController extends \yii\web\Controller
 {
     public function behaviors()
     {
         return [
             [
-                'class' => 'yii\filters\HttpCache',
+                'class' => \yii\filters\HttpCache::class,
                 'only' => ['index', 'path'],
                 //'lastModified' =>
                 'cacheControlHeader' => $this->getModule()->cacheControlHeader,
             ],
+
         ];
     }
 
@@ -27,7 +33,15 @@ class ImageController extends \yii\web\Controller
      */
     private function getModule()
     {
-        return Yii::$app->getModule('attachment');
+        return $this->module;
+    }
+
+    /**
+     * @return \musan\attachments\components\AttachmentService
+     */
+    private function getAttachmentService()
+    {
+        return $this->module->get('service');
     }
 
     /**
@@ -35,6 +49,7 @@ class ImageController extends \yii\web\Controller
      * @param $mode string
      * @param $width integer
      * @param $height integer
+     * @return string
      */
     public function getCachePath($attachment, $mode, $width, $height, $filter, $full)
     {
@@ -45,6 +60,14 @@ class ImageController extends \yii\web\Controller
         '/' . $attachment->path;
     }
 
+    /**
+     * @param $key
+     * @param $mode
+     * @param $width
+     * @param $height
+     * @throws NotFoundHttpException
+     * @deprecated Use action Get
+     */
     public function actionIndex($key, $mode, $width, $height)
     {
 
