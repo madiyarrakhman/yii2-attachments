@@ -30,7 +30,7 @@ class AttachmentsWidget extends \musan\attachments\widgets\DropzoneWidget
 
         $this->events['success'] = new JsExpression("
             function(file, answer) {
-                $(file).data('hash', answer.hash);
+                $(file).data('uid', answer.uid);
 
                 refresh_attachments(this.files, '{$this->name}');
 
@@ -56,7 +56,7 @@ class AttachmentsWidget extends \musan\attachments\widgets\DropzoneWidget
         {
                     var files_list = [];
                     files.forEach(function(file) {
-                        files_list.push({hash: $(file).data('hash'), status: file.status});
+                        files_list.push({uid: $(file).data('uid'), status: file.status});
                     });
                     $('#'+hidden_field_id).val(JSON.stringify(files_list));
         }
@@ -72,7 +72,7 @@ class AttachmentsWidget extends \musan\attachments\widgets\DropzoneWidget
         $files = array();
         foreach($this->files as $file)
         {
-            $files[] = array('hash' => $file->hash, 'status' => 'success');
+            $files[] = array('uid' => $file->uid, 'status' => 'success');
         }
         echo Html::hiddenInput('attachments', Json::encode($files), ['id' => $this->name]);
 

@@ -59,18 +59,19 @@ class UploadController extends \yii\web\Controller
 
         $attachment = new Attachment();
         $attachment->original_name = $file->getName();
-        $attachment->hash = $file->getHash();
+        $attachment->uid = $file->getUid();
         $attachment->path = $file->getSavePath();
         $attachment->size = $file->getSize();
         $attachment->type = $file->getType();
+        $attachment->extension = $file->getExtensionName();
 
         if ($attachment->save())
         {
             return [
-                'hash' => $attachment->hash,
+                'uid' => $attachment->uid,
                 'id' => $attachment->id,
                 'filename' => $attachment->original_name,
-                'filelink' => Image::url($attachment->hash, $link_width, $link_height)
+                'filelink' => Image::url($attachment->uid, $link_width, $link_height)
             ];
         } else {
             return ['error'=>$attachment->getErrors()];
@@ -81,11 +82,11 @@ class UploadController extends \yii\web\Controller
     
     public function actionDelete()
     {
-        $hash = Yii::$app->getRequest()->post('hash');
+        $uid = Yii::$app->getRequest()->post('uid');
 
-        if (empty($hash)) throw new BadRequestHttpException(400);
+        if (empty($uid)) throw new BadRequestHttpException(400);
 
-        $attachment = Attachment::findOne(['hash'=>$hash]);
+        $attachment = Attachment::findOne(['uid'=>$uid]);
 
         if (empty($attachment)) throw new NotFoundHttpException(404);
 

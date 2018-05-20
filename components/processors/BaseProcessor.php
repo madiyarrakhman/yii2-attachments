@@ -35,10 +35,4 @@ abstract class BaseProcessor extends BaseObject
      */
     abstract function prepare(Attachment $attachment, $params);
 
-    /**
-     * @param $params
-     * @return string
-     */
-    abstract function getCachePath($params);
-
 }

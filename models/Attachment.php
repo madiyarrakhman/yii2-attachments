@@ -14,7 +14,7 @@ use yii\db\Expression;
  * @property string $created_at
  * @property string $updated_at
  * @property string $original_name
- * @property string $hash
+ * @property string $uid
  * @property string $path
  * @property string $type
  * @property string $object
@@ -40,11 +40,11 @@ class Attachment extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['original_name', 'hash', 'path'], 'required'],
+            [['original_name', 'uid', 'path'], 'required'],
             [['object_id', 'size'], 'integer'],
             [['create_time', 'update_time'], 'safe'],
-            [['original_name', 'hash', 'path', 'object', 'type', 'attr_name', 'extension'], 'string', 'max' => 255],
-            [['hash'], 'unique'],
+            [['original_name', 'uid', 'path', 'object', 'type', 'attr_name', 'extension'], 'string', 'max' => 255],
+            [['uid'], 'unique'],
             [['is_downloadable'], 'boolean'],
         ];
     }
@@ -57,7 +57,7 @@ class Attachment extends \yii\db\ActiveRecord
         return [
             'id' => Yii::t('attachment', 'ID'),
             'original_name' => Yii::t('attachment', 'Оригинальное имя файла'),
-            'hash' => Yii::t('attachment', 'Хеш имени файла'),
+            'uid' => Yii::t('attachment', 'UID'),
             'path' => Yii::t('attachment', 'Путь к файлу'),
             'object' => Yii::t('attachment', 'Объект'),
             'object_id' => Yii::t('attachment', 'ИД объекта'),

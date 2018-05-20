@@ -127,11 +127,11 @@ class DropzoneWidget extends \yii\base\Widget
 
             if (strpos($attachment->type, 'image') === 0)
             {
-                $thumbnail = Image::url($attachment->hash, empty($this->options['thumbnailWidth'])?100:$this->options['thumbnailWidth'], empty($this->options['thumbnailHeight'])?100:$this->options['thumbnailHeight']);
+                $thumbnail = Image::url($attachment->uid, empty($this->options['thumbnailWidth'])?100:$this->options['thumbnailWidth'], empty($this->options['thumbnailHeight'])?100:$this->options['thumbnailHeight']);
                 $files .= "this.emit('thumbnail', mockFile, '{$thumbnail}');";
             }
 
-            $files .= "  $(mockFile).data('hash', '{$attachment->hash}'); this.files.push(mockFile); ";
+            $files .= "  $(mockFile).data('uid', '{$attachment->uid}'); this.files.push(mockFile); ";
         }
 
         $this->options = ArrayHelper::merge($this->dictOptions, $this->options);

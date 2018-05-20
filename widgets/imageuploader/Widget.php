@@ -29,7 +29,7 @@ class Widget extends InputWidget
         $files = array();
         foreach($this->model->attachments as $file)
         {
-            $files[] = array('hash' => $file->hash, 'status' => 'success');
+            $files[] = array('uid' => $file->uid, 'status' => 'success');
         }
 
         return Json::encode($files);
@@ -78,14 +78,14 @@ class Widget extends InputWidget
             'previewsContainer' => "#{$this->id}-container",
 
             'success' => new JsExpression("function(file, answer){
-                $(file).data('hash', answer.hash);
+                $(file).data('uid', answer.uid);
                 $(file).data('fileId', answer.id);
                 refresh_attachments(this.files, '{$this->id}-input');
                 }"),
 
 
             'removedfile' => new JsExpression("function(file){
-                 $.post('{$this->removeUrl}', {'hash': file.hash}, function(data){
+                 $.post('{$this->removeUrl}', {'uid': file.uid}, function(data){
                     file.previewElement.parentNode.removeChild(file.previewElement);
                  }, 'json');
                     $.each(window.files_list, function(index, current_file){
@@ -106,14 +106,14 @@ class Widget extends InputWidget
 
         foreach ($this->model->attachments as $key=>$file) {
             $this->view->registerJs(new JsExpression("
-                window.files_list.push({hash: '{$file->hash}', status: 'success', fileId: {$file->id}});
+                window.files_list.push({uid: '{$file->uid}', status: 'success', fileId: {$file->id}});
 
-                var mockFile{$key} = {hash: '{$file->hash}', status: 'success', fileId: {$file->id},name: 'file{$key}', size: {$file->size}};
+                var mockFile{$key} = {uid: '{$file->uid}', status: 'success', fileId: {$file->id},name: 'file{$key}', size: {$file->size}};
                 $(mockFile{$key}).data('fileId', {$file->id});
                 myDropzone.emit('addedfile', mockFile{$key});
                 
                 // And optionally show the thumbnail of the file:
-                myDropzone.emit('thumbnail', mockFile{$key}, '".Image::url($file->hash, 200, 150)."');
+                myDropzone.emit('thumbnail', mockFile{$key}, '".Image::url($file->uid, 200, 150)."');
 
                 // Make sure that there is no progress bar, etc...
                 myDropzone.emit('complete', mockFile{$key});

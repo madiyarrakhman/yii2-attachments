@@ -14,8 +14,8 @@ use yii\db\ActiveQuery;
 
 class AttachmentQuery extends ActiveQuery
 {
-    public function whereHash($hash)
+    public function whereUID($uid)
     {
-        return $this->andWhere(['hash' => $hash]);
+        return $this->andWhere(['uid' => $uid]);
     }
 }

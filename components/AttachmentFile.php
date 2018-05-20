@@ -7,7 +7,7 @@ use yii\web\UploadedFile;
 class AttachmentFile extends \yii\base\Component
 {
     private $_save_path;
-    private $_hash;
+    private $_uid;
     private $_path_deep = false;
     private $_subderictories;
 
@@ -48,10 +48,10 @@ class AttachmentFile extends \yii\base\Component
     {
         if ($this->_path_deep === false) $this->_path_deep = $path_deep;
 
-        $hash = $this->getHash();
+        $uid = $this->getUid();
         $path = '';
         for ($i=0; $i<$this->_path_deep; $i++) {
-            $c = $hash[$i];
+            $c = $uid[$i];
             $path .= $c.'/';
         }
 
@@ -59,16 +59,16 @@ class AttachmentFile extends \yii\base\Component
             mkdir($upload_dir . $path, 0775, true);
         }
 
-        $this->_save_path = $path . substr($hash, $this->_path_deep) . '.' . strtolower((empty($extension) ? $this->getExtensionName() : $extension));
+        $this->_save_path = $path . substr($uid, $this->_path_deep) . '.' . strtolower((empty($extension) ? $this->getExtensionName() : $extension));
         return $this->_save_path;
     }
 
     /**
-     * @return string "Random" generated hash
+     * @return string "Random" generated UID
      */
-    public function getHash()
+    public function getUid()
     {
-        return empty($this->_hash) ? $this->_hash = md5(uniqid()) : $this->_hash;
+        return empty($this->_uid) ? $this->_uid = md5(uniqid()) : $this->_uid;
     }
 
     public function getSavePath()

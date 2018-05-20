@@ -42,7 +42,7 @@ class AttributesAttachmentBehavior extends \yii\base\Behavior
 
             if (!empty($value))
             {
-                $attachment = Attachment::findOne(['hash'=>$value]);
+                $attachment = Attachment::findOne(['uid'=>$value]);
                 if (!empty($attachment))
                 {
                     $attachment->updateAttributes([
@@ -79,7 +79,7 @@ class AttributesAttachmentBehavior extends \yii\base\Behavior
 
         $attachment = new Attachment();
         $attachment->original_name = basename($url_filename);
-        $attachment->hash = $file->getHash();
+        $attachment->uid = $file->getUid();
         $attachment->path = $file->getSavePath();
 
         $attachment->type = \yii\helpers\FileHelper::getMimeType($filename);
@@ -87,7 +87,7 @@ class AttributesAttachmentBehavior extends \yii\base\Behavior
 
         if ($attachment->save())
         {
-            return $attachment->hash;
+            return $attachment->uid;
         } else {
             return '';
         }

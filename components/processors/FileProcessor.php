@@ -12,9 +12,8 @@ namespace musan\attachments\components\processors;
 use musan\attachments\models\Attachment;
 use yii\base\BaseObject;
 
-class FileBaseProcessor extends BaseProcessor
+class FileProcessor extends BaseProcessor
 {
-
     /**
      * @param Attachment $attachment
      * @param array $params

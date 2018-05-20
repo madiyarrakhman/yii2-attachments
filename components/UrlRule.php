@@ -10,22 +10,97 @@
 namespace musan\attachments\components;
 
 
+use musan\attachments\Module;
+use yii\web\Request;
 use yii\web\UrlRuleInterface;
 
+/**
+ * Class UrlRule
+ * @package musan\attachments\components
+ */
 class UrlRule implements UrlRuleInterface
 {
-    public $moduleId = 'attachment';
+    public $_module;
 
     public $patterns = [
 
     ];
+
+    const URL_FORMAT = '/mode/width/height/filename';
+
+    /**
+     * @return Module
+     */
+    public function getModule()
+    {
+        return $this->_module;
+    }
+
+    /**
+     * @param $format string
+     * @param $params array
+     * @return string
+     */
+    public function fillUrlString($params, $format = self::URL_FORMAT)
+    {
+        return str_replace(array_keys($params), array_values($params), $format);
+    }
+
+    /**
+     * @param $string
+     * @return string
+     */
+    public function generateKey($string)
+    {
+        $secret = $this->getModule()->secret;
+
+        return md5($secret . $string);
+    }
+
+    /**
+     * @param $data array
+     * @return bool
+     */
+    public function checkKey($data)
+    {
+        $url = $this->fillUrlString($data);
+        return $this->generateKey($url) === $data['key'];
+    }
 
     /**
      * @inheritdoc
      */
     public function createUrl($manager, $route, $params)
     {
-        // TODO: Implement createUrl() method.
+
+        if ($route === $this->getModule()->id . '/download/index') {
+
+            $url = \Yii::$app->cache->get(md5($route . serialize($params)));
+
+            if ($url === false) {
+                $attachment = $this->getModule()->get('service')->getAttachment($params['uid']);
+
+                if ($attachment === null) {
+                    return false;
+                }
+
+                $data = [
+                    'mode' => $params['mode'] ?? $this->getModule()->image_default_mode,
+                    'width' => $params['width'],
+                    'height' => $params['height'],
+                    'filename' => $params['uid'] . '.' . $attachment->extension
+                ];
+
+                $url_without_key = $this->fillUrlString($data);
+
+                $url = '/' . $this->generateKey($url_without_key) . $url_without_key;
+
+                \Yii::$app->cache->set(md5($route . serialize($params)), $url, 2628000);
+            }
+
+            return $url;
+        }
+        return false;
     }
 
     /**
@@ -43,8 +118,12 @@ class UrlRule implements UrlRuleInterface
         $params['mode'] = $output[2];
         $params['width'] = $output[3];
         $params['height'] = $output[4];
-        $params['path'] = $output[5];
+        $params['filename'] = $output[5];
 
-        return ['/' . $this->moduleId .'/download/get', $params];
+        if ($this->checkKey($params) === false) {
+            return false;
+        }
+
+        return ['/' . $this->getModule()->id .'/download/index', $params];
     }
 }

@@ -82,9 +82,9 @@ class ImageController extends \yii\web\Controller
 
         $image_path = sprintf('%s/%s', implode('/',$path), Yii::$app->getRequest()->get('name'));
 
-        $hash = pathinfo(str_replace('/','',$image_path), PATHINFO_FILENAME);
+        $uid = pathinfo(str_replace('/','',$image_path), PATHINFO_FILENAME);
 
-        $attachment = Attachment::find()->where(['hash' => $hash])->one();
+        $attachment = Attachment::find()->where(['uid' => $uid])->one();
 
         if ($key !== md5(sprintf('%s/%s/%s', $width, $height, $attachment->path).$this->getModule()->get('render')->secret)) throw new NotFoundHttpException();
         if (!file_exists(realpath($this->getModule()->upload_path.'/'.$attachment->path)))

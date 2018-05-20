@@ -24,6 +24,8 @@ class AttachmentService extends Component
 
     public $_module;
 
+    private $_collection = [];
+
     /**
      * @var null|BaseProcessor[]
      */
@@ -72,9 +74,17 @@ class AttachmentService extends Component
         return $this->_processors[$id];
     }
 
-    public function getAttachment($hash)
+    /**
+     * @param $uid string
+     * @return Attachment|null
+     */
+    public function getAttachment($uid)
     {
-        return Attachment::find()->whereHash($hash)->one();
+        if (!isset($this->_collection[$uid])) {
+            $this->_collection[$uid] = Attachment::find()->whereUID($uid)->one();
+        }
+
+        return $this->_collection[$uid];
     }
 
     /**
@@ -117,15 +127,15 @@ class AttachmentService extends Component
 
 
     /**
-     * @param string $hash
+     * @param string $uid
      * @param array $params
      * @return Response
      * @throws \yii\base\InvalidValueException
      * @throws \yii\base\InvalidConfigException
      */
-    public function send($hash, $params)
+    public function send($uid, $params)
     {
-        $attachment = $this->getAttachment($hash);
+        $attachment = $this->getAttachment($uid);
 
         if (null === $attachment) throw new InvalidValueException('Attachment not found');
 

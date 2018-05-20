@@ -32,7 +32,7 @@ class ImageProcessor extends BaseProcessor
         $path_params['mode'] = $params['mode'];
         $path_params['width'] = $params['width'];
         $path_params['height'] = $params['height'];
-        //$path_params['path'] = $params['path'];
+        //$path_params['filename'] = $params['filename'];
 
         return $this->service->getCachePath(implode(DIRECTORY_SEPARATOR, $path_params));
     }

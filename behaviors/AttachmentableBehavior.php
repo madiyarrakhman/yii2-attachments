@@ -16,7 +16,7 @@ class AttachmentableBehavior extends \yii\base\Behavior
         $object_id = $this->owner->id;
 
         $attachment = Attachment::find()->where(['object' => $object, 'object_id' => $object_id])->orderBy('id')->one();
-        return (empty($attachment)) ? null : $attachment->hash;
+        return (empty($attachment)) ? null : $attachment->uid;
     }
 
     public function getAttachments()
@@ -37,9 +37,9 @@ class AttachmentableBehavior extends \yii\base\Behavior
         $object_id = $this->owner->id;
         foreach($attachments_data as $file)
         {
-            if ($file->status == 'success' && isset($file->hash))
+            if ($file->status == 'success' && isset($file->uid))
             {
-                $attachment = Attachment::findOne(['hash' => $file->hash]);
+                $attachment = Attachment::findOne(['uid' => $file->uid]);
                 $attachment->updateAttributes(['object'=>$object, 'object_id'=>$object_id]);
             }
 

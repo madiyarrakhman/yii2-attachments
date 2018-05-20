@@ -31,16 +31,13 @@ class DownloadController extends Controller
         return $this->module->get('service');
     }
 
-    public function actionGet($key, $path)
+    public function actionIndex($key, $filename)
     {
-        $pathinfo = pathinfo($path);
-        $hash = $pathinfo['filename'];
-
-        // todo: check key
-        $query_string = Yii::$app->request->getQueryString();
+        $pathinfo = pathinfo($filename);
+        $uid = $pathinfo['filename'];
 
         //try {
-        $response = $this->getAttachmentService()->send($hash, Yii::$app->request->getQueryParams());
+        $response = $this->getAttachmentService()->send($uid, Yii::$app->request->getQueryParams());
         //} catch (\Exception $e) {
         //    throw new \yii\web\NotFoundHttpException();
         //}

@@ -24,7 +24,7 @@ class PhotoWidget extends \musan\attachments\widgets\DropzoneWidget
         $this->value = $this->model->getAttribute($this->attribute);
         if (!empty($this->value))
         {
-            $attachment = Attachment::findOne(['hash' => $this->value]);
+            $attachment = Attachment::findOne(['uid' => $this->value]);
             if (!empty($attachment))
             {
                 $this->files[] = $attachment;
@@ -40,8 +40,8 @@ class PhotoWidget extends \musan\attachments\widgets\DropzoneWidget
 
         $this->events['success'] = new JsExpression("
             function(file, answer) {
-                $(file).data('hash', answer.hash);
-                $('#{$hidden_field_id}').val(answer.hash);
+                $(file).data('uid', answer.uid);
+                $('#{$hidden_field_id}').val(answer.uid);
                 console.log(answer);
                 console.log($('#{$hidden_field_id}').val());
             }

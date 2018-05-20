@@ -32,6 +32,10 @@ class Module extends \yii\base\Module implements BootstrapInterface
 
     public $image_filter = ImageInterface::FILTER_UNDEFINED;
 
+    public $image_default_mode = 'c';
+
+    public $secret = '';
+
     public function init()
     {
         parent::init();
@@ -53,7 +57,7 @@ class Module extends \yii\base\Module implements BootstrapInterface
         $app->getUrlManager()->addRules([
             [
                 'class' => UrlRule::class,
-                'moduleId' => $this->id,
+                '_module' => $this,
             ],
         ], false);
     }
@@ -73,7 +77,7 @@ class Module extends \yii\base\Module implements BootstrapInterface
 
     public function getFilePath($attachment)
     {
-        $attachment = ($attachment instanceof Attachment) ? $attachment : Attachment::findOne(['hash' => $attachment]);
+        $attachment = ($attachment instanceof Attachment) ? $attachment : Attachment::findOne(['uid' => $attachment]);
 
         if (empty($attachment)) return null;
 

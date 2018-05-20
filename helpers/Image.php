@@ -3,12 +3,15 @@
 namespace musan\attachments\helpers;
 
 use Yii;
+use yii\helpers\Url;
 
 
 class Image extends File
 {
-    static public function url($hash, $width, $height, $mode = null)
+    static public function url($uid, $width, $height, $mode = null)
     {
-        return Yii::$app->getModule('attachment')->get('render')->getImageUrl($hash, $width, $height, $mode);
+        return Url::to(['/attachment/download/index', 'uid' => $uid, 'mode' => $mode, 'width' => $width, 'height' => $height]);
+
+        //return Yii::$app->getModule('attachment')->get('render')->getImageUrl($uid, $width, $height, $mode);
     }
 } 
