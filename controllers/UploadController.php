@@ -67,11 +67,33 @@ class UploadController extends \yii\web\Controller
 
         if ($attachment->save())
         {
+            /*
+             *                     echo json_encode( array( array(
+                            "name" => $model->name,
+                            "type" => $model->mime_type,
+                            "size" => $model->size,
+                            //Add the title
+                            "title" => $model->title,
+                            //And the description
+                            "description" => $model->description,
+                            "url" => $publicPath.$model->name,
+                            "thumbnail_url" => $publicPath.$model->name,
+                            "delete_url" => $this->createUrl( "upload", array(
+                                "_method" => "delete",
+                                "file" => $path.$model->name
+                            ) ),
+                            "delete_type" => "POST"
+                        ) ) );*/
             return [
                 'uid' => $attachment->uid,
                 'id' => $attachment->id,
                 'filename' => $attachment->original_name,
-                'filelink' => Image::url($attachment->uid, $link_width, $link_height)
+                'name' => $attachment->original_name,
+                'filelink' => Image::url($attachment->uid, $link_width, $link_height),
+                'url' => Image::url($attachment->uid, $link_width, $link_height),
+                "thumbnail_url" => Image::url($attachment->uid, $link_width, $link_height),
+                "type" => $attachment->type,
+                "size" => $attachment->size,
             ];
         } else {
             return ['error'=>$attachment->getErrors()];

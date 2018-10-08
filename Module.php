@@ -4,7 +4,8 @@ namespace musan\attachments;
 
 use Imagine\Image\ImageInterface;
 use musan\attachments\components\AttachmentService;
-use musan\attachments\components\UrlRule;
+use musan\attachments\components\ImageUrlRule;
+use musan\attachments\components\FileUrlRule;
 use musan\attachments\models\Attachment;
 use yii\base\BootstrapInterface;
 
@@ -56,7 +57,11 @@ class Module extends \yii\base\Module implements BootstrapInterface
     {
         $app->getUrlManager()->addRules([
             [
-                'class' => UrlRule::class,
+                'class' => ImageUrlRule::class,
+                '_module' => $this,
+            ],
+            [
+                'class' => FileUrlRule::class,
                 '_module' => $this,
             ],
         ], false);
