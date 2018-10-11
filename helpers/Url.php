@@ -21,19 +21,19 @@ class Url
         return $module;
     }
 
-    private static function getRoute()
+    private static function getRoute($type = 'file')
     {
         $module = self::getModule();
-        return '/' . $module->id . '/download/index';
+        return '/' . $module->id . '/download/' . $type;
     }
 
     public static function toFile($uid)
     {
-        return YiiUrl::to([self::getRoute(), 'uid' => $uid]);
+        return YiiUrl::to([self::getRoute('file'), 'uid' => $uid]);
     }
 
     public static function toImage($uid, $width, $height, $mode = null)
     {
-        return YiiUrl::to([self::getRoute(), 'uid' => $uid, 'mode' => $mode, 'width' => $width, 'height' => $height]);
+        return YiiUrl::to([self::getRoute('image'), 'uid' => $uid, 'mode' => $mode, 'width' => $width, 'height' => $height]);
     }
 }

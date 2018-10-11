@@ -1,12 +1,4 @@
 <?php
-/**
- * Poject: kapital2
- * User: mitrii
- * Date: 10.08.2018
- * Time: 12:24 PM
- * Original File Name: ImageUrlRule.php
- */
-
 namespace musan\attachments\components;
 
 
@@ -17,7 +9,7 @@ class ImageUrlRule extends UrlRule
     public function createUrl($manager, $route, $params)
     {
 
-        if ($route === $this->getModule()->id . '/download/index') {
+        if ($route === $this->getModule()->id . '/download/image') {
 
             $url = \Yii::$app->cache->get(md5($route . serialize($params)));
 

@@ -49,7 +49,7 @@ class UploadController extends \yii\web\Controller
         return Yii::$app->getModule('attachment');
     }
 
-    public function actionAdd($name = 'filename', $link_width = 640, $link_height = 480)
+    public function actionAdd($name = 'filename', $link_width = 640, $link_height = 480, $arrayResponse = false)
     {
 
         Yii::$app->getResponse()->format = Response::FORMAT_JSON;
@@ -67,24 +67,7 @@ class UploadController extends \yii\web\Controller
 
         if ($attachment->save())
         {
-            /*
-             *                     echo json_encode( array( array(
-                            "name" => $model->name,
-                            "type" => $model->mime_type,
-                            "size" => $model->size,
-                            //Add the title
-                            "title" => $model->title,
-                            //And the description
-                            "description" => $model->description,
-                            "url" => $publicPath.$model->name,
-                            "thumbnail_url" => $publicPath.$model->name,
-                            "delete_url" => $this->createUrl( "upload", array(
-                                "_method" => "delete",
-                                "file" => $path.$model->name
-                            ) ),
-                            "delete_type" => "POST"
-                        ) ) );*/
-            return [
+            $result = [
                 'uid' => $attachment->uid,
                 'id' => $attachment->id,
                 'filename' => $attachment->original_name,
@@ -95,6 +78,8 @@ class UploadController extends \yii\web\Controller
                 "type" => $attachment->type,
                 "size" => $attachment->size,
             ];
+
+            return ($arrayResponse) ? ['files' => [$result]] : $result;
         } else {
             return ['error'=>$attachment->getErrors()];
         }

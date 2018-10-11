@@ -17,7 +17,7 @@ class FileUrlRule extends UrlRule
     public function createUrl($manager, $route, $params)
     {
 
-        if ($route === $this->getModule()->id . '/download/index') {
+        if ($route === $this->getModule()->id . '/download/file') {
 
             $url = \Yii::$app->cache->get(md5($route . serialize($params)));
 

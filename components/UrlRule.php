@@ -1,7 +1,6 @@
 <?php
 namespace musan\attachments\components;
 
-
 use musan\attachments\Module;
 use yii\web\Request;
 use yii\web\UrlRuleInterface;
@@ -33,8 +32,9 @@ class UrlRule implements UrlRuleInterface
      * @param $params array
      * @return string
      */
-    public function fillUrlString($params, $format = self::URL_FORMAT)
+    public function fillUrlString($params, $format = null)
     {
+        $format = $format ?? $this::URL_FORMAT;
         return str_replace(array_keys($params), array_values($params), $format);
     }
 
