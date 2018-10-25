@@ -35,6 +35,10 @@ class Module extends \yii\base\Module implements BootstrapInterface
 
     public $image_default_mode = 'c';
 
+    public $image_placeholders_enable = false;
+
+    public $image_placeholders_template = 'http://placehold.it/{widht}x{height}/{bg_color}/{text_color}/&text={text}';
+
     public $secret = '';
 
     public function init()
@@ -59,6 +63,8 @@ class Module extends \yii\base\Module implements BootstrapInterface
             [
                 'class' => ImageUrlRule::class,
                 '_module' => $this,
+                'placeholderEnable' => $this->image_placeholders_enable,
+                'placeholderTemplate' => $this->image_placeholders_template,
             ],
             [
                 'class' => FileUrlRule::class,
