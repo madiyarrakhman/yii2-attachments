@@ -3,6 +3,7 @@
 namespace musan\attachments\behaviors;
 
 use common\models\Block;
+use musan\attachments\file\RemoteFile;
 use Yii;
 use yii\db\ActiveRecord;
 use musan\attachments\models\Attachment;
@@ -68,22 +69,14 @@ class AttributesAttachmentBehavior extends \yii\base\Behavior
     {
         if (!(new \yii\validators\UrlValidator())->validate($value, $error)) return $value;
 
-        $file = new \musan\attachments\components\AttachmentFile();
+        $file = new RemoteFile([
+            'upload_dir' => $this->getModule()->getUploadPath() . '/',
+            'path_deep' => $this->getModule()->getPathDeep(),
+            'url' => $value
+        ]);
+        $file->save();
 
-        $url_filename = parse_url($value, PHP_URL_PATH);
-        $tmp_filename = explode(".", $url_filename);
-        $file_ext = array_pop($tmp_filename);
-        $filename = $this->getModule()->getUploadPath() . '/' . $file->generateSavePath($this->getModule()->getUploadPath() . '/' , $this->getModule()->getPathDeep(), $file_ext);
-
-        copy($value, $filename);
-
-        $attachment = new Attachment();
-        $attachment->original_name = basename($url_filename);
-        $attachment->uid = $file->getUid();
-        $attachment->path = $file->getSavePath();
-
-        $attachment->type = \yii\helpers\FileHelper::getMimeType($filename);
-        $attachment->size = filesize($filename);
+        $attachment = $this->getModule()->get('service')->createAttachment($file);
 
         if ($attachment->save())
         {

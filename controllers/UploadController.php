@@ -2,6 +2,7 @@
 
 namespace musan\attachments\controllers;
 
+use musan\attachments\file\UploadedFile;
 use Yii;
 use yii\filters\AccessControl;
 use yii\filters\VerbFilter;
@@ -9,7 +10,6 @@ use yii\web\BadRequestHttpException;
 use yii\web\HttpException;
 use yii\web\NotFoundHttpException;
 use yii\web\Response;
-use musan\attachments\components\AttachmentFile;
 use musan\attachments\models\Attachment;
 use musan\attachments\helpers\Image;
 
@@ -54,16 +54,12 @@ class UploadController extends \yii\web\Controller
 
         Yii::$app->getResponse()->format = Response::FORMAT_JSON;
 
-        $file = AttachmentFile::getInstanceByName($name);
-        $file->saveByDeep($this->getModule()->getUploadPath() . '/' , $this->getModule()->getPathDeep());
+        $file = UploadedFile::getInstanceByName($name);
+        $file->upload_dir = $this->getModule()->getUploadPath() . '/';
+        $file->path_deep = $this->getModule()->getPathDeep();
+        $file->save();
 
-        $attachment = new Attachment();
-        $attachment->original_name = $file->getName();
-        $attachment->uid = $file->getUid();
-        $attachment->path = $file->getSavePath();
-        $attachment->size = $file->getSize();
-        $attachment->type = $file->getType();
-        $attachment->extension = $file->getExtensionName();
+        $attachment = $this->module->get('service')->createAttachment($file);
 
         if ($attachment->save())
         {

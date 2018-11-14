@@ -1,6 +1,7 @@
 <?php
 namespace musan\attachments\components;
 
+use musan\attachments\components\file\BaseFile;
 use musan\attachments\components\processors\BaseProcessor;
 use musan\attachments\components\processors\FileBaseProcessor;
 use musan\attachments\components\processors\ImageProcessor;
@@ -123,6 +124,22 @@ class AttachmentService extends Component
         }
 
         return $result;
+    }
+
+    /**
+     * @param $file BaseFile
+     */
+    public function createAttachment($file)
+    {
+        $attachment = new Attachment();
+        $attachment->original_name = $file->getName();
+        $attachment->uid = $file->getUid();
+        $attachment->path = $file->getSavePath();
+        $attachment->size = $file->getSize();
+        $attachment->type = $file->getType();
+        $attachment->extension = $file->getExtensionName();
+
+        return $attachment;
     }
 
 

@@ -1,87 +1,45 @@
 <?php
-namespace musan\attachments\components;
+namespace musan\attachments\file;
 
-use yii\web\UploadedFile;
+use yii\web\UploadedFile as YiiUploadedFile;
 
 /**
- * Class AttachmentFile
- * @package musan\attachments\components
- * @deprecated
+ * Class UploadedFile
+ * @package musan\attachments\components\file
  */
-class AttachmentFile extends \yii\base\Component
+class UploadedFile extends BaseFile
 {
-    private $_save_path;
-    private $_uid;
-    private $_path_deep = false;
+
     private $_subderictories;
 
     /**
-     * @var UploadedFile
+     * @var YiiUploadedFile
      */
     private $_uploadedFile;
 
     /**
      * @param string $name
-     * @return AttachmentFile
+     * @return UploadedFile
      */
     public static function getInstanceByName($name)
     {
         $class = get_called_class();
         $self = new $class();
-        $self->_uploadedFile = UploadedFile::getInstanceByName($name);
+        $self->_uploadedFile = YiiUploadedFile::getInstanceByName($name);
 
         return $self;
     }
 
     /**
-     * @param string $upload_dir Path to upload directory
-     * @param int $path_deep Number of subdirectories for file
      * @return bool
      */
-    public function saveByDeep($upload_dir, $path_deep)
+    public function save()
     {
-        return $this->getUploadedFile()->saveAs($upload_dir . $this->generateSavePath($upload_dir, $path_deep));
+        return $this->getUploadedFile()->saveAs($this->getFullSavePath());
     }
 
     /**
-     * @param string $upload_dir
-     * @param int $path_deep Number of subdirectories for file
-     * @return string
-     */
-    public function generateSavePath($upload_dir, $path_deep = 5, $extension = null)
-    {
-        if ($this->_path_deep === false) $this->_path_deep = $path_deep;
-
-        $uid = $this->getUid();
-        $path = '';
-        for ($i=0; $i<$this->_path_deep; $i++) {
-            $c = $uid[$i];
-            $path .= $c.'/';
-        }
-
-        if (!file_exists($upload_dir . $path)) {
-            mkdir($upload_dir . $path, 0775, true);
-        }
-
-        $this->_save_path = $path . substr($uid, $this->_path_deep) . '.' . strtolower((empty($extension) ? $this->getExtensionName() : $extension));
-        return $this->_save_path;
-    }
-
-    /**
-     * @return string "Random" generated UID
-     */
-    public function getUid()
-    {
-        return empty($this->_uid) ? $this->_uid = md5(uniqid()) : $this->_uid;
-    }
-
-    public function getSavePath()
-    {
-        return $this->_save_path;
-    }
-
-    /**
-     * @return UploadedFile
+     * @return YiiUploadedFile
      */
     public function getUploadedFile()
     {
@@ -150,7 +108,7 @@ class AttachmentFile extends \yii\base\Component
      */
     public function getExtensionName()
     {
-       return $this->getUploadedFile()->extension;
+        return $this->getUploadedFile()->extension;
     }
 
-} 
+}
