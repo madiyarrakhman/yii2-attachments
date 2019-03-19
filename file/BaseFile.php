@@ -14,7 +14,6 @@ abstract class BaseFile extends BaseObject
     public $path_deep = 5;
 
     /**
-     * @param string $upload_dir Path to upload directory
      * @param  bool $deleteTempFile whether to delete the temporary file after saving.
      * @return bool
      */

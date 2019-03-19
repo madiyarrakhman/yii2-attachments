@@ -31,9 +31,10 @@ class UploadedFile extends BaseFile
     }
 
     /**
+     *
      * @return bool
      */
-    public function save()
+    public function save($deleteTempFile = false)
     {
         return $this->getUploadedFile()->saveAs($this->getFullSavePath());
     }
