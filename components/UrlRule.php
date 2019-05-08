@@ -11,7 +11,7 @@ use yii\web\UrlRuleInterface;
  */
 class UrlRule implements UrlRuleInterface
 {
-    public $_module;
+    public $_moduleID;
 
     public $patterns = [
 
@@ -24,7 +24,7 @@ class UrlRule implements UrlRuleInterface
      */
     public function getModule()
     {
-        return $this->_module;
+        return \Yii::$app->getModule($this->_moduleID);
     }
 
     /**

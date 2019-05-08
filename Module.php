@@ -62,13 +62,13 @@ class Module extends \yii\base\Module implements BootstrapInterface
         $app->getUrlManager()->addRules([
             [
                 'class' => ImageUrlRule::class,
-                '_module' => $this,
+                '_moduleID' => $this->id,
                 'placeholderEnable' => $this->image_placeholders_enable,
                 'placeholderTemplate' => $this->image_placeholders_template,
             ],
             [
                 'class' => FileUrlRule::class,
-                '_module' => $this,
+                '_moduleID' => $this->id,
             ],
         ], false);
     }
