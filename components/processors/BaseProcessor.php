@@ -13,6 +13,8 @@ use yii\base\BaseObject;
 abstract class BaseProcessor extends BaseObject
 {
 
+    const REQUIRED_PARAMS = [];
+
     /**
      * @var string[] Processor extensions list
      */

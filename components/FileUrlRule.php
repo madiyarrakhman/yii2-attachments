@@ -56,7 +56,7 @@ class FileUrlRule extends UrlRule
         }
 
         $params['key']  = $output[1];
-        $params['filename'] = $output[5];
+        $params['filename'] = $output[2];
 
         if ($this->checkKey($params) === false) {
             return false;

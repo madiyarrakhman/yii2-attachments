@@ -2,6 +2,7 @@
 
 namespace musan\attachments\controllers;
 
+use musan\attachments\actions\LegacyAddAction;
 use musan\attachments\file\UploadedFile;
 use Yii;
 use yii\filters\AccessControl;
@@ -18,6 +19,13 @@ class UploadController extends \yii\web\Controller
 
     public $defaultAction = 'add';
     public $enableCsrfValidation = false;
+
+    public function actions()
+    {
+        return [
+            'add' => LegacyAddAction::class,
+        ];
+    }
 
     public function behaviors()
     {
@@ -47,40 +55,6 @@ class UploadController extends \yii\web\Controller
     private function getModule()
     {
         return Yii::$app->getModule('attachment');
-    }
-
-    public function actionAdd($name = 'filename', $link_width = 640, $link_height = 480, $arrayResponse = false)
-    {
-
-        Yii::$app->getResponse()->format = Response::FORMAT_JSON;
-
-        $file = UploadedFile::getInstanceByName($name);
-        $file->upload_dir = $this->getModule()->getUploadPath() . '/';
-        $file->path_deep = $this->getModule()->getPathDeep();
-        $file->save();
-
-        $attachment = $this->module->get('service')->createAttachment($file);
-
-        if ($attachment->save())
-        {
-            $result = [
-                'uid' => $attachment->uid,
-                'id' => $attachment->id,
-                'filename' => $attachment->original_name,
-                'name' => $attachment->original_name,
-                'filelink' => Image::url($attachment->uid, $link_width, $link_height),
-                'url' => Image::url($attachment->uid, $link_width, $link_height),
-                "thumbnail_url" => Image::url($attachment->uid, $link_width, $link_height),
-                "type" => $attachment->type,
-                "size" => $attachment->size,
-            ];
-
-            return ($arrayResponse) ? ['files' => [$result]] : $result;
-        } else {
-            return ['error'=>$attachment->getErrors()];
-        }
-
-
     }
     
     public function actionDelete()

@@ -17,6 +17,8 @@ use yii\base\InvalidParamException;
 
 class ImageProcessor extends BaseProcessor
 {
+    const REQUIRED_PARAMS = ['mode', 'width', 'height'];
+
     public $resizeFilter = ImageInterface::FILTER_MITCHELL;
     public $options = [
         'jpeg_quality' => 95,

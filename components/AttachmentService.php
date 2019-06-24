@@ -3,7 +3,7 @@ namespace musan\attachments\components;
 
 use musan\attachments\components\file\BaseFile;
 use musan\attachments\components\processors\BaseProcessor;
-use musan\attachments\components\processors\FileBaseProcessor;
+use musan\attachments\components\processors\FileProcessor;
 use musan\attachments\components\processors\ImageProcessor;
 use musan\attachments\models\Attachment;
 use musan\attachments\Module;
@@ -46,7 +46,7 @@ class AttachmentService extends Component
             'extensions' => ['jpg', 'png', 'bmp', 'gif', 'jpeg'],
         ],
         'file' => [
-            'class' => FileBaseProcessor::class,
+            'class' => FileProcessor::class,
             'extensions' => [],
         ],
     ];
@@ -89,15 +89,27 @@ class AttachmentService extends Component
     }
 
     /**
-     * @param Attachment $attachment
+     * @param $attachment Attachment
+     * @param $params array
      * @return BaseProcessor
      * @throws \yii\base\InvalidConfigException
      */
-    public function detectProcessor($attachment)
+    public function detectProcessor($attachment, $params = [])
     {
         foreach ($this->processors as $id => $processor)
         {
-            if (in_array($attachment->extension, $processor['extensions'])) {
+            $processorClass = $processor['class'];
+
+            $paramsExist = true;
+            foreach ($processorClass::REQUIRED_PARAMS as $requiredParam)
+            {
+                if (!isset($params[$requiredParam])) {
+                    $paramsExist = false;
+                    break;
+                }
+            }
+
+            if ($paramsExist && in_array($attachment->extension, $processor['extensions'])) {
                 return $this->getProcessor($id);
             }
         }
