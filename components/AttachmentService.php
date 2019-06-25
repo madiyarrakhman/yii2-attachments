@@ -168,7 +168,7 @@ class AttachmentService extends Component
 
         if (null === $attachment) throw new InvalidValueException('Attachment not found');
 
-        $processor = $this->detectProcessor($attachment);
+        $processor = $this->detectProcessor($attachment, $params);
 
         $filePath = $processor->prepare($attachment, $params);
 
