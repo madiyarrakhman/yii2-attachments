@@ -58,7 +58,17 @@ class AttachmentService extends Component
 
     public function getModule()
     {
-        return $this->_module;
+        if ($this->_module instanceof Module)
+        {
+            return $this->_module;
+        }
+
+        if (is_string($this->_module))
+        {
+            return \Yii::$app->getModule($this->_module);
+        }
+
+        return new Module();
     }
 
     /**
