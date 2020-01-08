@@ -21,6 +21,9 @@ class DownloadController extends Controller
             [
                 'class' => \yii\filters\HttpCache::class,
                 'only' => ['index'],
+                'etagSeed' => function($action, $params) {
+                    return Yii::$app->request->get('key', 0);
+                },
                 'cacheControlHeader' => $this->getModule()->cacheControlHeader,
             ],
 
