@@ -15,6 +15,18 @@ use yii\web\Controller;
 class DownloadController extends Controller
 {
 
+    public function behaviors()
+    {
+        return [
+            [
+                'class' => \yii\filters\HttpCache::class,
+                'only' => ['index'],
+                'cacheControlHeader' => $this->getModule()->cacheControlHeader,
+            ],
+
+        ];
+    }
+
     /**
      * @return \musan\attachments\Module
      */
