@@ -139,7 +139,12 @@ class AttachmentService extends Component
      */
     public function getPath($relativePath, $create = false)
     {
-        $result = $this->module->upload_path . DIRECTORY_SEPARATOR . $relativePath;
+        if (\yii\helpers\StringHelper::startsWith($relativePath, DIRECTORY_SEPARATOR)) {
+            $result = $relativePath;
+        }
+        else {
+            $result = $this->module->upload_path . DIRECTORY_SEPARATOR . $relativePath;
+        }
 
         if ($create) {
             @mkdir(dirname($result), $this->pathPermissions, true);
@@ -176,7 +181,19 @@ class AttachmentService extends Component
     {
         $attachment = $this->getAttachment($uid);
 
-        if (null === $attachment) throw new InvalidValueException('Attachment not found');
+        if (null === $attachment) {
+
+            if ($params['filename'] === 'no-photo.png') {
+                $attachment = new Attachment();
+                $attachment->original_name = 'no-photo.png';
+                $attachment->uid = 'no-photo';
+                $attachment->extension = 'png';
+                $attachment->path = \Yii::getAlias('@musan/attachments/assets/images/no-photo.png');
+            }
+            else {
+                throw new InvalidValueException('Attachment not found');
+            }
+        }
 
         $processor = $this->detectProcessor($attachment, $params);
 

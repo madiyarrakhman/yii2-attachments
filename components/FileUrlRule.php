@@ -24,12 +24,8 @@ class FileUrlRule extends UrlRule
             if ($url === false) {
                 $attachment = $this->getModule()->get('service')->getAttachment($params['uid']);
 
-                if ($attachment === null) {
-                    return false;
-                }
-
                 $data = [
-                    'filename' => $params['uid'] . '.' . $attachment->extension
+                    'filename' => $params['uid'] . (($attachment !== null) ? '.' . $attachment->extension : '')
                 ];
 
                 $url_without_key = $this->fillUrlString($data);

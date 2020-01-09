@@ -2,6 +2,8 @@
 namespace musan\attachments\components;
 
 
+use musan\attachments\models\Attachment;
+
 class ImageUrlRule extends UrlRule
 {
     const URL_FORMAT = '/mode/width/height/filename';
@@ -47,14 +49,16 @@ class ImageUrlRule extends UrlRule
                 $attachment = $this->getModule()->get('service')->getAttachment($params['uid']);
 
                 if ($attachment === null) {
-                    return false;
+                    $attachment = new Attachment();
+                    $attachment->uid = 'no-photo';
+                    $attachment->extension = 'png';
                 }
 
                 $data = [
                     'mode' => $params['mode'] ?? $this->getModule()->image_default_mode,
                     'width' => $params['width'],
                     'height' => $params['height'],
-                    'filename' => $params['uid'] . '.' . $attachment->extension
+                    'filename' => $attachment->uid . '.' . $attachment->extension
                 ];
 
                 $url_without_key = $this->fillUrlString($data);
