@@ -2,6 +2,7 @@
 namespace musan\attachments\file;
 
 use yii\base\BaseObject;
+use yii\helpers\FileHelper;
 
 abstract class BaseFile extends BaseObject
 {
@@ -33,9 +34,7 @@ abstract class BaseFile extends BaseObject
                 $path .= $c . DIRECTORY_SEPARATOR;
             }
 
-            if (!file_exists($this->upload_dir . $path)) {
-                mkdir($this->upload_dir . $path, 0775, true);
-            }
+            FileHelper::createDirectory($this->upload_dir . $path, 777);
 
             $this->_save_path = $path . substr($uid, $this->path_deep) . '.' . $this->getExtensionName();
         }
