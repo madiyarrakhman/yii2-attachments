@@ -23,6 +23,7 @@ use yii\db\Expression;
  * @property string $attr_name
  * @property string $extension
  * @property boolean $is_downloadable
+ * @property boolean $is_watermarked
  */
 class Attachment extends \yii\db\ActiveRecord
 {
@@ -45,7 +46,7 @@ class Attachment extends \yii\db\ActiveRecord
             [['create_time', 'update_time'], 'safe'],
             [['original_name', 'uid', 'path', 'object', 'type', 'attr_name', 'extension'], 'string', 'max' => 255],
             [['uid'], 'unique'],
-            [['is_downloadable'], 'boolean'],
+            [['is_downloadable', 'is_watermarked'], 'boolean'],
         ];
     }
 
@@ -65,6 +66,7 @@ class Attachment extends \yii\db\ActiveRecord
             'type' => Yii::t('attachment', 'Тип'),
             'attr_name' => Yii::t('attachment', 'Поле'),
             'is_downloadable' => Yii::t('attachment', 'Разрешить скачивание'),
+            'is_watermarked' => Yii::t('attachment', 'С водяным знаком'),
             'create_time' => Yii::t('attachment', 'Дата создания'),
             'update_time' => Yii::t('attachment', 'Дата изменения'),
             'extension' => Yii::t('attachment', 'Расширение'),
