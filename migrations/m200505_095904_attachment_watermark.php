@@ -13,7 +13,7 @@ class m200505_095904_attachment_watermark extends Migration
      */
     public function safeUp()
     {
-        $this->addColumn('{{%attachment}}', 'is_watermarked', $this->boolean()->default(false));
+        $this->addColumn('{{%attachment}}', 'is_watermarked', $this->boolean()->defaultValue(false));
     }
 
     /**
