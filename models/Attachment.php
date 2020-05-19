@@ -94,6 +94,7 @@ class Attachment extends \yii\db\ActiveRecord
                 'softDeleteAttributeValues' => [
                       'status' => self::STATUS_DELETED
                 ],
+                'replaceRegularDelete' => true,
             ]
         ];
     }

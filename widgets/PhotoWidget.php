@@ -42,21 +42,20 @@ class PhotoWidget extends \musan\attachments\widgets\DropzoneWidget
             function(file, answer) {
                 $(file).data('uid', answer.uid);
                 $('#{$hidden_field_id}').val(answer.uid);
-                console.log(answer);
-                console.log($('#{$hidden_field_id}').val());
             }
         ");
 
         $maxfilesexceeded = new JsExpression('function(file){this.removeFile(file);}');
 
         $removedFile = new JsExpression("
+
         function(file){
-                $.post('{$this->removeUrl}', $(file).data(), function(data){
+            
+        console.log('{$hidden_field_id}');
+                $.post('{$this->removeUrl}', $(file).data()).done(function(data){
                     $('#{$hidden_field_id}').val('');
-                    file.previewElement.parentNode.removeChild(file.previewElement);
-                }, 'json');
-        }
-        ");
+                });
+        }");
 
         $this->events['removedfile'] = empty($this->events['removedfile']) ? $removedFile : $this->events['removedfile'];
         $this->events['maxfilesexceeded'] = empty($this->events['maxfilesexceeded']) ? $maxfilesexceeded : $this->events['maxfilesexceeded'];
