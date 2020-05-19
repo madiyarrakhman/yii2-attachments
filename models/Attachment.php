@@ -5,6 +5,7 @@ namespace musan\attachments\models;
 use Yii;
 use yii\behaviors\TimestampBehavior;
 use yii\db\Expression;
+use yii2tech\ar\softdelete\SoftDeleteBehavior;
 
 /**
  * This is the model class for table "attachments".
@@ -16,6 +17,7 @@ use yii\db\Expression;
  * @property string $original_name
  * @property string $uid
  * @property string $path
+ * @property string $status
  * @property string $type
  * @property string $object
  * @property integer $object_id
@@ -27,6 +29,10 @@ use yii\db\Expression;
  */
 class Attachment extends \yii\db\ActiveRecord
 {
+
+    public const STATUS_CREATED = 0;
+    public const STATUS_DELETED = 2;
+
     /**
      * @inheritdoc
      */
@@ -42,7 +48,7 @@ class Attachment extends \yii\db\ActiveRecord
     {
         return [
             [['original_name', 'uid', 'path'], 'required'],
-            [['object_id', 'size'], 'integer'],
+            [['object_id', 'size', 'status'], 'integer'],
             [['create_time', 'update_time'], 'safe'],
             [['original_name', 'uid', 'path', 'object', 'type', 'attr_name', 'extension'], 'string', 'max' => 255],
             [['uid'], 'unique'],
@@ -60,6 +66,7 @@ class Attachment extends \yii\db\ActiveRecord
             'original_name' => Yii::t('attachment', 'Оригинальное имя файла'),
             'uid' => Yii::t('attachment', 'UID'),
             'path' => Yii::t('attachment', 'Путь к файлу'),
+            'status' => Yii::t('attachment', 'Статус'),
             'object' => Yii::t('attachment', 'Объект'),
             'object_id' => Yii::t('attachment', 'ИД объекта'),
             'size' => Yii::t('attachment', 'Размер'),
@@ -82,6 +89,12 @@ class Attachment extends \yii\db\ActiveRecord
                 'updatedAtAttribute' => 'update_time',
                 'value' => new Expression('NOW()'),
             ],
+            [
+                'class' => SoftDeleteBehavior::class,
+                'softDeleteAttributeValues' => [
+                      'status' => self::STATUS_DELETED
+                ],
+            ]
         ];
     }
 
